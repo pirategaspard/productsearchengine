@@ -3,27 +3,30 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class SearchController extends AbstractController
-{	
+{			
 	/**
-	 * @Route("/", name="Home")
+	 * @Route("/search", name="Search Results", methods={"POST"})
 	 */
-	public function index() {
-		return $this->render('search/form.html.twig');
+    public function search(Request $request) {
+		//dump($request->request->all());
+		$results = [1,2,3];
+		return $this->render('search/results.html.twig',['results'=>$results]);
 	}
 	
 	/**
 	 * @Route("/search", name="Search")
 	 */
-    public function search() {
+    public function form() {
 		return $this->render('search/form.html.twig');
 	}
 	
 	/**
-	 * @Route("/hello", name="Hello")
+	 * @Route("/", name="Home")
 	 */
-	public function hello() {
-		return $this->render('search/form.html.twig');
+	public function index() {
+		return $this->form();
 	}
 }

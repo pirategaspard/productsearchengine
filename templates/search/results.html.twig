@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+{% block content %}
+	<h1>{{ results|length }} Products Found</h1>
+	<table>
+	{% for result in results %}
+		<tr>
+			<td>$1</td>
+			<td><a href="">Product 1</a></td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endblock %}
+
