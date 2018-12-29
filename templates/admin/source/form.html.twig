@@ -4,4 +4,7 @@
 	{{ form_start(form) }}
 	{{ form_widget(form) }}
 	{{ form_end(form) }}
+	{% if source is not null %}
+	<form action="/admin/source/{{source.id}}/delete" method="POST"><input type="hidden" name="id" value="{{source.id}}"><input type="submit" value="Delete"></form>
+	{% endif %}
 {% endblock %}

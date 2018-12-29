@@ -8,11 +8,13 @@
 		<tr>
 			<td>Title</td>
 			<td>Url</td>
+			<td></td>
 		</tr>
 	{% for result in results %}
 		<tr>
 			<td><a href="/admin/source/{{result.id}}">{{result.title}}</a></td>
 			<td>{{result.url}}</td>
+			<td><form action="/admin/source/{{result.id}}/delete" method="POST"><input type="hidden" name="id" value="{{result.id}}"><input type="submit" value="Delete"></form></td>
 		</tr>
 	{% endfor %}
 	</table>

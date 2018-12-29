@@ -4,6 +4,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Debug;
 
 use App\Entity\Source;
 use App\Form\SourceType;
@@ -21,45 +22,57 @@ class AdminController extends AbstractController
 	 * @Route("/admin/source", name="Sources")
 	 */
     public function Sources() {	
-		$Sources = [];
+		$sources = [];
 		$repository = $this->getDoctrine()->getRepository(Source::class);
-		$Sources = $repository->findAll();
-		return $this->render('admin/source/index.html.twig',['results'=>$Sources]);
+		$sources = $repository->findAll();
+		return $this->render('admin/source/index.html.twig',['results'=>$sources]);
 	}
 	
 	/**
 	 * @Route("/admin/source/{id}", name="Source Form", methods={"GET"})
 	 */
-    public function Source_Form($id=0) {			
-		if ( $id > 0 ) 
-		{
-			$repository = $this->getDoctrine()->getRepository(Source::class);
-			$Source = $repository->find($id);
-		}
-		else
-		{
-			$Source = new Source;						
-		}
-		$form = $this->createForm(SourceType::class, $Source);
-		return $this->render('admin/source/form.html.twig',['form' => $form->createView(),'source'=>$Source]);
+    public function source_form($id=0) {			
+		$source = $this->get_source($id);
+		$form = $this->createForm(SourceType::class, $source);
+		return $this->render('admin/source/form.html.twig',['form' => $form->createView(),'source'=>$source]);
 	}
 	
 	/**
 	 * @Route("/admin/source/{id}", name="Source Save", methods={"POST"})
 	 */
-    public function Source_Save(Source $Source=null, Request $request) {			
-		$form = $this->createForm(SourceType::class, $Source)->handleRequest($request);
+    public function source_save(Request $request) {	//Source $source=null, 	
+		/*dump($request->request->get('source')['id']);
+		die('hi');*/
+		$source = $this->get_source($request->request->get('source')['id']);
+		$form = $this->createForm(SourceType::class, $source)->handleRequest($request);
 		if ($form->isSubmitted() ) {  //&& $form->isValid()
-			$Source = $form->getData();
+			$source = $form->getData();
 			$entityManager = $this->getDoctrine()->getManager();
-			$entityManager->persist($Source);
+			$entityManager->persist($source);
 			$entityManager->flush();			
 		}
 		else
 		{
-			die('oops');
+			//die('oops');
 		}
 		return $this->redirectToRoute('Sources');
+	}
+	
+	/**
+	 * @Route("/admin/source/{id}/delete", name="Source delete", methods={"POST"})
+	 */
+    public function source_delete($id=0) {			
+		$source = $this->get_source($id);
+		$entityManager = $this->getDoctrine()->getManager();
+		$entityManager->remove($source);
+		$entityManager->flush();
+		return $this->redirectToRoute('Sources');
+	}
+	
+	private function get_source($id=0)
+	{
+		$repository = $this->getDoctrine()->getRepository(Source::class);				
+		return $repository->find($id);
 	}
 }
 
