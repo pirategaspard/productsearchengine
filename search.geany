@@ -28,13 +28,12 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=5
-FILE_NAME_0=208;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fbase.html.twig;0;4
-FILE_NAME_1=589;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FController%2FSearchController.php;0;4
-FILE_NAME_2=0;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fsearch%2Fform.html.twig;0;4
-FILE_NAME_3=85;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fsearch%2Fresults.html.twig;0;4
-FILE_NAME_4=1207;Conf;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2F.config%2Fgeany%2Ffiletype_extensions.conf;0;4
-FILE_NAME_5=7004;Conf;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2F.config%2Fgeany%2Ffiledefs%2Ffiletypes.html;0;4
+current_page=3
+FILE_NAME_0=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FController%2FSearchController.php;0;4
+FILE_NAME_1=242;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fsearch%2Fresults.html.twig;0;4
+FILE_NAME_2=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FRepository%2FProductRepository.php;0;4
+FILE_NAME_3=387;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FController%2FadminController.php;0;4
+FILE_NAME_4=12;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fadmin%2Findex.html.twig;0;4
 
 [VTE]
 last_dir=/home/pirategaspard

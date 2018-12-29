@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\Table(name="product",indexes={@ORM\Index(columns={"name","data"}, flags={"fulltext"})})
  */
 class Product
 {
@@ -40,6 +41,12 @@ class Product
      * @ORM\Column(type="text")
      */
     private $data;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $source;
 
     public function getId(): ?int
     {
@@ -102,6 +109,18 @@ class Product
     public function setData(string $data): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    public function getSource(): ?Source
+    {
+        return $this->source;
+    }
+
+    public function setSource(?Source $source): self
+    {
+        $this->source = $source;
 
         return $this;
     }

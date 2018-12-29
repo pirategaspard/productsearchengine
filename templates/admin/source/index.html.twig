@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+{% block content %}
+	<h1>Sources</h1>
+	<ul>
+		<li><a href="/admin/source/0">Add Source</a></li>
+	</ul>
+	<table>
+		<tr>
+			<td>Title</td>
+			<td>Url</td>
+		</tr>
+	{% for result in results %}
+		<tr>
+			<td><a href="/admin/source/{{result.id}}">{{result.title}}</a></td>
+			<td>{{result.url}}</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endblock %}
