@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+{% block content %}
+	<h1>Products</h1>
+	<ul>
+		<li><a href="/admin/product/0">Add product</a></li>
+	</ul>
+	<table>
+		<tr>
+			<td>Title</td>
+			<td>Url</td>
+			<td></td>
+		</tr>
+	{% for result in results %}
+		<tr>
+			<td><a href="/admin/product/{{result.id}}">{{result.name}}</a></td>
+			<td>{{result.url}}</td>
+			<td><form action="/admin/product/{{result.id}}/delete" method="POST"><input type="hidden" name="id" value="{{result.id}}"><input type="submit" value="Delete"></form></td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endblock %}

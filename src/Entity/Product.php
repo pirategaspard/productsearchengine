@@ -48,9 +48,20 @@ class Product
      */
     private $source;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $url_image;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+    
+    public function setId(?int $id=0): self
+    {
+		$this->id = $id;
+        return $this;
     }
 
     public function getPrice(): ?int
@@ -61,7 +72,6 @@ class Product
     public function setPrice(int $price): self
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -73,7 +83,6 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -85,7 +94,6 @@ class Product
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -97,7 +105,6 @@ class Product
     public function setUrl(string $url): self
     {
         $this->url = $url;
-
         return $this;
     }
 
@@ -109,7 +116,6 @@ class Product
     public function setData(string $data): self
     {
         $this->data = $data;
-
         return $this;
     }
 
@@ -118,10 +124,27 @@ class Product
         return $this->source;
     }
 
-    public function setSource(?Source $source): self
+	public function setSource(?Source $source): self
     {
         $this->source = $source;
+        return $this;
+    }
+    
+    /*public function setSource(?Source $source): self
+    {
+		$this->source = $source;
+		$source->addProduct($this);
+        return $this;
+    }*/
 
+    public function getUrlImage(): ?string
+    {
+        return $this->url_image;
+    }
+
+    public function setUrlImage(?string $url_image): self
+    {
+        $this->url_image = $url_image;
         return $this;
     }
 }
