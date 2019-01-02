@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "sensio/framework-extra-bundle": "^5.2",
+        "sunra/php-simple-html-dom-parser": "^1.5",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "4.2.*",
         "symfony/debug-bundle": "4.2.*",

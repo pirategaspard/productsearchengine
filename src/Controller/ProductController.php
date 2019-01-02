@@ -66,5 +66,8 @@ class ProductController extends AbstractController
 		return $repository->find($id);
 	}
 	
+	// 1) Scrape URLS for Products
+	// 2) Save Products found
+	
 	
 }

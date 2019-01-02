@@ -18,6 +18,18 @@ class SourceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Source::class);
     }
+    
+	public function removeAllProducts($source_id): self
+    {	
+		$sql = "DELETE FROM product
+				WHERE source_id = :source_id";		
+		$conn = $this->getEntityManager()->getConnection();
+		$q = $conn->prepare($sql);
+		$q->bindValue(':source_id',$source_id);
+		$q->execute();
+		return $this;
+	}
+    
 
     // /**
     //  * @return Source[] Returns an array of Source objects

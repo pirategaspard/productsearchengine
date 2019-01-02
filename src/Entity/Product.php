@@ -38,6 +38,16 @@ class Product
     private $url;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $url_image;
+    
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_last_updated;
+    
+    /**
      * @ORM\Column(type="text")
      */
     private $data;
@@ -47,11 +57,6 @@ class Product
      * @ORM\JoinColumn(nullable=false)
      */
     private $source;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $url_image;
 
     public function getId(): ?int
     {
@@ -106,36 +111,7 @@ class Product
     {
         $this->url = $url;
         return $this;
-    }
-
-    public function getData(): ?string
-    {
-        return $this->data;
-    }
-
-    public function setData(string $data): self
-    {
-        $this->data = $data;
-        return $this;
-    }
-
-    public function getSource(): ?Source
-    {
-        return $this->source;
-    }
-
-	public function setSource(?Source $source): self
-    {
-        $this->source = $source;
-        return $this;
-    }
-    
-    /*public function setSource(?Source $source): self
-    {
-		$this->source = $source;
-		$source->addProduct($this);
-        return $this;
-    }*/
+    }   
 
     public function getUrlImage(): ?string
     {
@@ -145,6 +121,39 @@ class Product
     public function setUrlImage(?string $url_image): self
     {
         $this->url_image = $url_image;
+        return $this;
+    }
+    
+    public function getDateLastUpdated(): ?\DateTimeInterface
+    {
+        return $this->date_last_updated;
+    }
+
+    public function setDateLastUpdated(?\DateTimeInterface $date_last_updated): self
+    {
+        $this->date_last_updated = $date_last_updated;
+        return $this;
+    }
+    
+    public function getData(): ?string
+    {
+        return $this->data;
+    }
+
+    public function setData(string $data): self
+    {
+        $this->data = $data;
+        return $this;
+    }    
+
+	public function getSource(): ?Source
+    {
+        return $this->source;
+    }
+
+	public function setSource(?Source $source): self
+    {
+        $this->source = $source;
         return $this;
     }
 }

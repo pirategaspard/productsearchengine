@@ -41,9 +41,9 @@ class SourceController extends AbstractController
 		$form = $this->createForm(SourceType::class, $source)->handleRequest($request);
 		if ($form->isSubmitted() ) {  //&& $form->isValid()
 			$source = $form->getData();
-			$entityManager = $this->getDoctrine()->getManager();
-			$entityManager->persist($source);
-			$entityManager->flush();			
+			$Manager = $this->getDoctrine()->getManager();
+			$Manager->persist($source);
+			$Manager->flush();			
 		}
 		else
 		{
@@ -57,9 +57,10 @@ class SourceController extends AbstractController
 	 */
     public function source_delete($id=0) {			
 		$source = $this->get_source($id);
-		$entityManager = $this->getDoctrine()->getManager();
-		$entityManager->remove($source);
-		$entityManager->flush();
+		$this->getDoctrine()->getRepository(Source::class)->removeAllProducts($id);
+		$Manager = $this->getDoctrine()->getManager();			
+		$Manager->remove($source);
+		$Manager->flush();
 		return $this->redirectToRoute('Sources');
 	}
 	
@@ -69,5 +70,6 @@ class SourceController extends AbstractController
 		return $repository->find($id);
 	}
 	
-	
+	// 1) search source URLS for new URLS
+	// 2) save URLS
 }

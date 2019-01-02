@@ -98,6 +98,9 @@
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
     },
+    "sunra/php-simple-html-dom-parser": {
+        "version": "v1.5.2"
+    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {

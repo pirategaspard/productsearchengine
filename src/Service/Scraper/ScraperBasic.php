@@ -1,0 +1,184 @@
+<?php
+namespace App\Service\Scraper;
+
+class ScraperBasic extends AbstractScraper
+{
+	public function parseHtml()
+    {
+		$flags = [];
+		$flags['found_match'] = 0;		
+		// Page title is the most important grab that first.
+		$page_title = $this->findPageTitle();			
+		// product name is usually in an h1 tag. Look for h1 tags
+		$html_results = $this->html->find('h1');	
+		foreach($html_results as $html_result) 
+		{
+			// Assuming that Product name is in the title, see if we can find an h1 tag that matches the title
+			// For each h1 tag see if the text of the h1 tag is also in the page title
+			$h = trim($this->utils->getRegexUtils()->replaceHTMLEntities($html_result->plaintext)); 
+			$has_match = preg_match('('.$h.')',$page_title);
+			if($has_match)
+			{
+				// We founda  match! Use this h1 as the product name
+				$flags['found_match'] = 1;
+				$product = $this->getNewProduct();
+				$product->setName($h);
+				$product = $this->populateProduct($product,$html_result);
+			}
+		}
+		// if we didnt' find an h1 tag that was also in the title we will just guess
+		if ($flags['found_match'] == 0 )
+		{
+			// Let's use the first h1 tag we found and see if we can poplate a Product record
+			$product = $this->getNewProduct();	
+			$product->setName(trim($html_results[0]->plaintext));
+			$product = $this->populateProduct($product,$html_results[0]);
+		}
+		// if we created a Product record with a price we can save it. 
+		if ( strlen($product->getPrice()) > 0 )
+		{
+			// set public key. If we recrawl this page we can use this key to find it. 
+			//$product->setPublicKey($this->createKey($product));
+			$this->products[] = $product;
+		}
+		/*echo '<pre>';
+		var_dump($this->products);
+		echo '</pre>'; die;*/
+		return $this; 
+	}
+		
+	private function populateProduct($product,$html_match)
+	{		
+		// Do we have a description meta tag?		
+		$product->setDescription($this->findProductDescription());
+		$product->setUrl($this->findProductUrl());
+		$product->setUrlImage($this->findProductImage($html_match));
+		$product->setPrice($this->findProductPrice($html_match));
+		$product->setData($this->utils->getRegexUtils()->cleanText($this->html->plaintext));
+		return $product;
+	}
+	
+		
+	private function findPageTitle(): string
+	{
+		$page_title = '';
+		// Do we have a title meta tag?
+		$meta_title = $this->html->find("meta[name='title']", 0);
+		if ( $meta_title )
+		{		
+			$page_title = $meta_title->content; 	// if we have a title meta tag use it
+		}
+		else
+		{			
+			// otherwise use the page title
+			$page_title = $this->html->find("title", 0)->plaintext; 
+		}
+		return $this->utils->getRegexUtils()->cleanText($page_title);
+	}
+	
+	private function findProductDescription(): string
+	{
+		$product_description = '';
+		// Do we have a description meta tag?		
+		$meta_description = $this->html->find("meta[property='og:description']", 0);
+		//var_dump($meta_description); die;
+		if ( $meta_description )
+		{		
+			$product_description = $meta_description->content; 	// if we have a meta tag defined use it
+		} 
+		else
+		{
+			$meta_description = $this->html->find("meta[name='description']", 0);
+			if ( $meta_description )
+			{		
+				$product_description = $meta_description->content; 	// if we have a meta tag defined use it
+			}
+		}
+		return $this->utils->getRegexUtils()->cleanText($product_description);
+	}
+	
+	private function findProductUrl(): string
+	{
+		$product_url = '';
+		$meta_canonical_url = $this->html->find("head link[rel=canonical]",0);		
+		if ( $meta_canonical_url )
+		{		
+			$product_url = $meta_canonical_url->href;
+		}
+		else
+		{
+			$product_url = $this->url;
+		}
+		return $this->utils->getRegexUtils()->cleanText($product_url);
+	}
+	
+	private function findProductImage($html_match): string
+	{
+		$i = 0;
+		$max_search_depth = 5;
+		$product_image = '';
+		$meta_image = $this->html->find("meta[property='og:image']", 0);
+		if ( $meta_image )
+		{		
+			$product_image = $meta_image->content; 	// if we have a meta tag defined use it
+		}
+		// if we didn't find an image
+		if( strlen($product_image) == 0 )
+		{
+			// find the image closest to the h1. Go up 5 levels. 
+			$html_current_search_context = $html_match;	//reset search context
+			while (( strlen($product->image_url) == 0 ) && ( $i < $max_search_depth ))
+			{		
+				if ( $html_current_search_context )
+				{			
+					$html_imgs = ($html_current_search_context->find('img'));
+					if ( count($html_imgs) )
+					{						
+						// We found an image. This doesn't always find a *good* image
+						$product_image = $html_imgs[0]->src; 
+					}
+					else
+					{				
+						$html_current_search_context = $html_current_search_context->parent();				
+					}			
+					/*foreach($html_imgs as $img) 
+					{
+						//$prop = 'data-original';
+						echo '<br>'.$img->src;
+					}*/
+				}
+				$i++;
+			}
+		}
+		return $product_image;
+	}
+	
+	private function findProductPrice($html_match): string
+	{
+		// go up a few levels and let's search for a price and an image
+		// find nearest price.
+		$i = 0;
+		$max_search_depth = 10;
+		$product_price = '';
+		$html_current_search_context = $html_match;	
+		while (( strlen($product_price) == 0 ) && ( $i < $max_search_depth))
+		{					
+			if ( $html_current_search_context )
+			{	
+				$price = $this->utils->getRegexUtils()->findPrice($html_current_search_context->plaintext);
+				if ( $price > 0)
+				{
+					$product_price = $price;
+				}
+				else
+				{				
+					$html_current_search_context = $html_current_search_context->parent();			
+				}				
+			}
+			$i++;
+		}
+		$product_price = preg_replace('/[\.,]/','',$product_price);
+		return $product_price;
+	}
+	
+}

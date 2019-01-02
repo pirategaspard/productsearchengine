@@ -33,6 +33,11 @@ class Source
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_last_updated;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -70,6 +75,17 @@ class Source
         $this->url = $url;
         return $this;
     }
+    
+	public function getDateLastUpdated(): ?\DateTimeInterface
+    {
+        return $this->date_last_updated;
+    }
+
+    public function setDateLastUpdated(?\DateTimeInterface $date_last_updated): self
+    {
+        $this->date_last_updated = $date_last_updated;
+        return $this;
+    }
 
     /**
      * @return Collection|Product[]
@@ -100,7 +116,19 @@ class Source
         return $this;
     }
     
+    public function addProducts(Collection $products): self
+    {
+		// safe way
+        foreach ( $products as $product ) 
+        {
+			$this->addProduct($product);
+		}
+		// unsafe way
+		//$this->products = $products;
+        return $this;
+    }
+    
     public function __toString() {
 	  return $this->title;
-	}
+	} 
 }
