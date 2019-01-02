@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- * @ORM\Table(name="product",indexes={@ORM\Index(columns={"name","data"}, flags={"fulltext"})})
+ * @ORM\Table(name="product",indexes={@ORM\Index(columns={"name","data"}, flags={"fulltext"})}, uniqueConstraints={@ORM\UniqueConstraint(columns={"id_code"})});
  */
 class Product
 {
@@ -16,6 +16,11 @@ class Product
      * @ORM\Column(type="integer")
      */
     private $id;
+
+	/**     
+     * @ORM\Column(type="string", length=50)
+     */
+    private $id_code;
 
     /**
      * @ORM\Column(type="integer")
@@ -56,7 +61,7 @@ class Product
      * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $source;
+    private $source;    
 
     public function getId(): ?int
     {
@@ -147,13 +152,25 @@ class Product
     }    
 
 	public function getSource(): ?Source
-    {
-        return $this->source;
-    }
+             {
+                 return $this->source;
+             }
 
 	public function setSource(?Source $source): self
+             {
+                 $this->source = $source;
+                 return $this;
+             }
+
+    public function getIdCode(): ?string
     {
-        $this->source = $source;
+        return $this->id_code;
+    }
+
+    public function setIdCode(string $id_code): self
+    {
+        $this->id_code = $id_code;
+
         return $this;
     }
 }

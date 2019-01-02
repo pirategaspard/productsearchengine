@@ -38,7 +38,7 @@ class ScraperBasic extends AbstractScraper
 		if ( strlen($product->getPrice()) > 0 )
 		{
 			// set public key. If we recrawl this page we can use this key to find it. 
-			//$product->setPublicKey($this->createKey($product));
+			$product->setIdCode($this->createKey($product));
 			$this->products[] = $product;
 		}
 		/*echo '<pre>';
