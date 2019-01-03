@@ -21,7 +21,6 @@ class ProductRepository extends ServiceEntityRepository
     
 	public function deleteByIdCode($id_code=0)
     {
-		var_dump($id_code);
 		return $this->createQueryBuilder('p')
 			->delete()
             ->Where('p.id_code = :id_code')

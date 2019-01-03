@@ -1,12 +1,28 @@
 <?php
 namespace App\Service\Scraper;
 
+use Sunra\PhpSimple\HtmlDomParser;
+
 class ScraperBasic extends AbstractScraper
 {
+	public function fetchHtml(): self
+	{
+        $this->html = HtmlDomParser::file_get_html($this->scraper_url,false,null,0);
+        return $this;
+    }
+	
 	public function parseHtml()
     {
+		$this->findProducts();
+		$this->findUrls();		
+		return $this; 
+	}
+	
+	private function findProducts()
+	{
 		$flags = [];
-		$flags['found_match'] = 0;		
+		$flags['found_match'] = 0;	
+		$product = $this->getNewProduct();	
 		// Page title is the most important grab that first.
 		$page_title = $this->findPageTitle();			
 		// product name is usually in an h1 tag. Look for h1 tags
@@ -21,18 +37,22 @@ class ScraperBasic extends AbstractScraper
 			{
 				// We founda  match! Use this h1 as the product name
 				$flags['found_match'] = 1;
-				$product = $this->getNewProduct();
 				$product->setName($h);
 				$product = $this->populateProduct($product,$html_result);
 			}
 		}
 		// if we didnt' find an h1 tag that was also in the title we will just guess
-		if ($flags['found_match'] == 0 )
+		if ($flags['found_match'] == 0 && count($html_results))
 		{
 			// Let's use the first h1 tag we found and see if we can poplate a Product record
-			$product = $this->getNewProduct();	
 			$product->setName(trim($html_results[0]->plaintext));
 			$product = $this->populateProduct($product,$html_results[0]);
+		}
+		else
+		{
+			// We probably won't find anything useful, but lets look at the entire page anyway
+			//$product->setName($page_title);
+			//$product = $this->populateProduct($product,$this->html);
 		}
 		// if we created a Product record with a price we can save it. 
 		if ( strlen($product->getPrice()) > 0 )
@@ -41,10 +61,18 @@ class ScraperBasic extends AbstractScraper
 			$product->setIdCode($this->createKey($product));
 			$this->products[] = $product;
 		}
-		/*echo '<pre>';
-		var_dump($this->products);
-		echo '</pre>'; die;*/
-		return $this; 
+	}
+	
+	private function findUrls()
+	{
+		$anchors = $this->html->find('a');		
+		foreach($anchors as $a)
+		{
+			if(strlen($this->utils->getRegexUtils()->findURL($a->href)) > 0)
+			{
+				$this->urls[] = $this->getNewSource($a->href);
+			}
+		}
 	}
 		
 	private function populateProduct($product,$html_match)
@@ -54,7 +82,8 @@ class ScraperBasic extends AbstractScraper
 		$product->setUrl($this->findProductUrl());
 		$product->setUrlImage($this->findProductImage($html_match));
 		$product->setPrice($this->findProductPrice($html_match));
-		$product->setData($this->utils->getRegexUtils()->cleanText($this->html->plaintext));
+		//$product->setData($this->utils->getRegexUtils()->cleanText($this->html->plaintext));
+		$product->setData('');
 		return $product;
 	}
 	
@@ -68,11 +97,11 @@ class ScraperBasic extends AbstractScraper
 		{		
 			$page_title = $meta_title->content; 	// if we have a title meta tag use it
 		}
-		else
+		else if($this->html->find("title", 0))
 		{			
 			// otherwise use the page title
 			$page_title = $this->html->find("title", 0)->plaintext; 
-		}
+		}		
 		return $this->utils->getRegexUtils()->cleanText($page_title);
 	}
 	
@@ -107,7 +136,7 @@ class ScraperBasic extends AbstractScraper
 		}
 		else
 		{
-			$product_url = $this->url;
+			$product_url = $this->getScraperUrl();
 		}
 		return $this->utils->getRegexUtils()->cleanText($product_url);
 	}
@@ -127,7 +156,7 @@ class ScraperBasic extends AbstractScraper
 		{
 			// find the image closest to the h1. Go up 5 levels. 
 			$html_current_search_context = $html_match;	//reset search context
-			while (( strlen($product->image_url) == 0 ) && ( $i < $max_search_depth ))
+			while (( strlen($product_image) == 0 ) && ( $i < $max_search_depth ))
 			{		
 				if ( $html_current_search_context )
 				{			
@@ -138,8 +167,10 @@ class ScraperBasic extends AbstractScraper
 						$product_image = $html_imgs[0]->src; 
 					}
 					else
-					{				
-						$html_current_search_context = $html_current_search_context->parent();				
+					{	if($html_current_search_context)
+						{
+							$html_current_search_context = $html_current_search_context->parent();				
+						}
 					}			
 					/*foreach($html_imgs as $img) 
 					{
@@ -159,7 +190,7 @@ class ScraperBasic extends AbstractScraper
 		// find nearest price.
 		$i = 0;
 		$max_search_depth = 10;
-		$product_price = '';
+		$product_price = 0;
 		$html_current_search_context = $html_match;	
 		while (( strlen($product_price) == 0 ) && ( $i < $max_search_depth))
 		{					

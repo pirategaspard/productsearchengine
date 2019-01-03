@@ -1,4 +1,8 @@
 <?php
+/* 
+ * A Product needs a price and a name. 
+ * */
+
 
 namespace App\Entity;
 
@@ -59,7 +63,7 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $source;    
 

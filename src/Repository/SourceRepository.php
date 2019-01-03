@@ -30,6 +30,16 @@ class SourceRepository extends ServiceEntityRepository
 		return $this;
 	}
     
+    public function deleteByIdCode($id_code=0)
+    {
+		return $this->createQueryBuilder('p')
+			->delete()
+            ->Where('p.id_code = :id_code')
+            ->setParameter('id_code', $id_code)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 
     // /**
     //  * @return Source[] Returns an array of Source objects

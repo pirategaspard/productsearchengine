@@ -2,15 +2,16 @@
 namespace App\Service\Scraper;
 
 use App\Entity\Product;
+use App\Entity\Source;
 use App\Service\Util\ScraperUtils;
-use Sunra\PhpSimple\HtmlDomParser;
 
 abstract class AbstractScraper
 {
 	protected $source; 	
-	protected $url = '';
+	protected $scraper_url = '';
 	protected $html = '';	
 	protected $products = array();
+	protected $urls = array();
 	
 	function __construct(ScraperUtils $scraperutils) 
 	{
@@ -20,19 +21,40 @@ abstract class AbstractScraper
 	public function setSource($source=null) 
 	{ 
 		$this->source = $source;
-	}
+	}	
 	
-	public function setUrl($url): self
+	public function setScraperUrl($url): self
 	{
-        $this->url = $url;
-        return $this;
-    }   
-	
-	public function fetchHtml(): self
-	{
-        $this->html = HtmlDomParser::file_get_html($this->url,false,null,0);
+        $this->scraper_url = $url;
         return $this;
     }
+    
+    public function getScraperUrl(): string
+	{
+        return $this->scraper_url;
+    } 
+    
+    public function getProducts()
+	{
+		return $this->products;
+	}
+	
+	public function getUrls()
+	{
+		return $this->urls;
+	}	  
+    
+    public function hasHtml(): bool
+    {
+		if (!$this->html)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
     
     public function reset(): self
 	{
@@ -42,26 +64,29 @@ abstract class AbstractScraper
         return $this;
     }
     
-    public function getNewProduct(): Product
+    protected function getNewProduct(): Product
     {
 		$p = new Product;
 		$p->setSource($this->source);
 		return $p;
 	}
 	
-	public function getProducts()
-	{
-		return $this->products;
+	protected function getNewSource($url): Source
+    {
+		$s = new Source;
+		$s->setUrl($url);
+		$s->setIdCode($this->createKey($s));
+		return $s;
 	}
 	
 	// create an id that doesn't change when the Product is rescraped.
-	public function createKey($Product): string
+	protected function createKey($obj): string
 	{
-		return substr(hash('sha256',$this->source->getId().$Product->getUrl().$Product->getName()),-50);
+		return substr(hash('sha256',$this->source->getId().$obj->getUrl()),-50);
 	}
-
-	// This function must be extended in the child.
-	abstract function parseHtml();
-
+	
+	// These function must be extended in the child.
+	abstract public function parseHtml();
+	abstract public function fetchHtml();
 }
 ?>

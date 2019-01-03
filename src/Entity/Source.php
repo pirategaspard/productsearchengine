@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Sources are the starting points for the web robot to begin 
+ * looking for products. Sources can be urls that the web robot 
+ * has found and stored for future scraping or entered by humans 
+ * through the admin area
+ * */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,6 +24,11 @@ class Source
      * @ORM\Column(type="integer")
      */
     private $id;
+    
+    /**     
+     * @ORM\Column(type="string", length=50,nullable=true)
+     */
+    private $id_code;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -51,6 +63,18 @@ class Source
     public function setId(?int $id=0): self
     {
 		$this->id = $id;
+        return $this;
+    }
+    
+    public function getIdCode(): ?string
+    {
+        return $this->id_code;
+    }
+
+    public function setIdCode(string $id_code): self
+    {
+        $this->id_code = $id_code;
+
         return $this;
     }
 
