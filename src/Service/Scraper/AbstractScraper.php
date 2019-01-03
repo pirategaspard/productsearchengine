@@ -34,9 +34,11 @@ abstract class AbstractScraper
         return $this;
     }
     
-    public function clearHtml(): self
+    public function reset(): self
 	{
         $this->html = '';
+        $this->url = '';
+        $this->products = array();
         return $this;
     }
     
@@ -55,7 +57,7 @@ abstract class AbstractScraper
 	// create an id that doesn't change when the Product is rescraped.
 	public function createKey($Product): string
 	{
-		return substr(hash('sha256',$this->source->getId().$Product->getUrl().$Product->getName()),0,20);
+		return substr(hash('sha256',$this->source->getId().$Product->getUrl().$Product->getName()),-50);
 	}
 
 	// This function must be extended in the child.

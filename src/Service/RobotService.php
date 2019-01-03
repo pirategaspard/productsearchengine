@@ -29,34 +29,36 @@ class RobotService
     public function fetchSourceUpdates()
     {
 		// Step 1) get list of urls from existing sources				
-		$repository = $this->ManagerRegistry->getRepository(Source::class);
-		$sources = $repository->findAll();
+		$source_repository = $this->ManagerRegistry->getRepository(Source::class);
+		$sources = $source_repository->findAll();
 		$this->fetchSourceProducts($sources);
 		return $this;				
 	}
 	
 	public function fetchSourceProducts($sources)
 	{
+		$product_repository = $this->ManagerRegistry->getRepository(Product::class);
 		// Step 2) Loop over sources and check the source urls for products
 		foreach ($sources as $source)
-		{
-			$products = array();
-			
-			// Step 2a) delete all existing products?
-			// Step 2b) look for products at the source url
+		{	
+			$products = array();					
+			// Step 2a) look for products at the source url
 			$products = $this->findProducts($source->getUrl(),$source);
 			if (count($products) > 0)
 			{
-				// increment counter 
+				// increment counter 				
 				$this->product_count += count($products);
 				// save all the listings
 				foreach($products as $p)
-				{
+				{					
+					// Step 2b) delete existing product (if it exists)
+					$product_repository->deleteByIdCode($p->getIdCode());
+					// Step 2c) Save product
 					$this->EntityManager->persist($p);
-					$this->EntityManager->flush();
-				}
+					$this->EntityManager->flush();										
+				}				
 			}
-		}		
+		}
 	}
 	
 	public function findProducts($url,$source=null)
@@ -67,7 +69,7 @@ class RobotService
 		$scraper->fetchHtml();
 		//if ( $scraper->html )
 		$newProducts = $scraper->parseHtml()->getProducts();
-		$scraper->clearHtml(); // free some memory
+		$scraper->reset(); // free some memory
 		return $newProducts;
 	}
 }
