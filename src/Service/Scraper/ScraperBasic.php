@@ -157,7 +157,8 @@ class ScraperBasic extends AbstractScraper
 	private function findProductUrl(): string
 	{
 		$product_url = '';
-		$meta_canonical_url = $this->html->find("head link[rel=canonical]",0);		
+		// canonical url is not a usable link?! Just use the scraper_url
+		/* $meta_canonical_url = $this->html->find("head link[rel=canonical]",0);		
 		if ( $meta_canonical_url )
 		{		
 			$product_url = $this->utils->searchUrl($meta_canonical_url->href,$this->getScraperUrl());
@@ -166,7 +167,8 @@ class ScraperBasic extends AbstractScraper
 		else
 		{
 			$product_url = $this->getScraperUrl();
-		}
+		}*/
+		$product_url = $this->getScraperUrl();
 		return $this->utils->getRegexUtils()->cleanText($product_url);
 	}
 	
@@ -219,7 +221,7 @@ class ScraperBasic extends AbstractScraper
 		// find nearest price.
 		$i = 0;
 		$max_search_depth = 10;
-		$product_price = 0;
+		$product_price = '';
 		$html_current_search_context = $html_match;	
 		while (( strlen($product_price) == 0 ) && ( $i < $max_search_depth))
 		{					

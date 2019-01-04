@@ -85,7 +85,7 @@ class Product
 
     public function setPrice(int $price): self
     {
-        $this->price = $price;
+        $this->price = round($price); // only want whole numbers
         return $this;
     }
 

@@ -65,9 +65,7 @@ class RobotService
 					// Step 4a) have we seen this url before?
 					if(!$source_repository->findOneBy(array('id_code' => $u->getIdCode())))
 					{
-						//$source_repository->deleteByIdCode($u->getIdCode());
-						// Step 4b) If the url doesn't exist, save it! 
-						
+						// Step 4b) If the url doesn't exist, save it! 					
 						$this->EntityManager->persist($u);
 						$this->EntityManager->flush();
 					}
