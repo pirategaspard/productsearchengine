@@ -1,13 +1,28 @@
-{% extends "base.html.twig" %}
-{% block content %}
-	<h1>{{ results|length }} Products Found</h1>
-	<table>
-	{% for result in results %}
-		<tr>
-			<td>$1</td>
-			<td><a href="">Product 1</a></td>
-		</tr>
-	{% endfor %}
-	</table>
+{% extends "search/index.html.twig" %}
+{% block datatable %}
+	<h2>{{ results|length }} Products Found</h2>
+	<div class="table-responsive">
+		<table class="table table-striped table-sm">
+			<thead>
+				<tr>
+					<td></td>
+					<td>Price</td>
+					<td></td>
+					<td>Title</td>
+					<td>Description</td>
+				</tr>
+			</thead>
+			<tbody>
+		{% for result in results %}
+			<tr>
+				<td><a href="{{result.url}}" target="_blank"><input type="button" value="Buy" /></a></td>
+				<td>${{result.price}}</td>
+				<td><a href="{{result.url}}" target="_blank"><img src="{{result.UrlImage}}" width="50" /></a></td>
+				<td><a href="{{result.url}}" target="_blank">{{result.name}}</a></td>
+				<td>{{result.description}}</td>
+			</tr>
+		{% endfor %}
+		</table>
+	</div>
 {% endblock %}
 

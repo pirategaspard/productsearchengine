@@ -1,21 +1,28 @@
 {% extends "admin/index.html.twig" %}
-{% block content %}
-	<h1>Products</h1>
-	<ul>
-		<li><a href="/admin/product/0">Add product</a></li>
-	</ul>
-	<table>
-		<tr>
-			<td>Title</td>
-			<td>Url</td>
-			<td></td>
-		</tr>
-	{% for result in results %}
-		<tr>
-			<td><a href="/admin/product/{{result.id}}">{{result.name}}</a></td>
-			<td>{{result.url}}</td>
-			<td><form action="/admin/product/{{result.id}}/delete" method="POST"><input type="hidden" name="id" value="{{result.id}}"><input type="submit" value="Delete"></form></td>
-		</tr>
-	{% endfor %}
-	</table>
+{% block datatable %}
+	<h2>Products</h2>
+	<div class="table-responsive">
+		<table class="table table-striped table-sm">
+			<thead>
+				<tr>
+					<td></td>
+					<td>Title</td>
+					<td>Price</td>
+					<td>Url</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+		{% for result in results %}
+			<tr>
+				<td><img src="{{result.UrlImage}}" width="50" /></td>
+				<td><a href="/admin/product/{{result.id}}">{{result.name}}</a></td>
+				<td>${{result.price}}</td>				
+				<td><a href="{{result.url}}" target="_blank">visit source</a></td>
+				<td><a href="/admin/product/{{result.id}}" method="POST"><input type="submit" value="Edit"></a></td>
+				<!--<td><form action="/admin/product/{{result.id}}/delete" method="POST"><input type="hidden" name="id" value="{{result.id}}"><input type="submit" value="Delete"></form></td>-->
+			</tr>
+		{% endfor %}
+		</table>
+	</div>
 {% endblock %}

@@ -5,15 +5,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+use App\Entity\Product;
+
 class SearchController extends AbstractController
 {			
 	/**
 	 * @Route("/search", name="Search Results", methods={"POST"})
 	 */
     public function search(Request $request) {
-		//dump($request->request->all());
-		$results = [1,2,3];
-		return $this->render('search/results.html.twig',['results'=>$results]);
+		$repository = $this->getDoctrine()->getRepository(product::class);
+		$products = $repository->findAll();
+		return $this->render('search/results.html.twig',['results'=>$products]);
 	}
 	
 	/**
