@@ -7,9 +7,9 @@ class ScraperUtils
 {
 	private $regex_utils;
 	
-	function __construct(RegexUtils $regex_utils) 
+	function __construct() 
 	{
-		$this->regex = $regex_utils;
+		$this->regex = new RegexUtils;
 	}	
 	
 	public function getRegexUtils()
@@ -27,10 +27,10 @@ class ScraperUtils
 	}
 	
 	// given html or string attempt to find, format, and return an image url
-	public function searchImgSrc($string,$product)
-	{	
+	public function searchImgSrc($string,$scraper_url)
+	{
 		$imgsrc = '';
-		$ParsedURL = parse_url($product->url);
+		$ParsedURL = parse_url($scraper_url);
 		/*$path = substr($ParsedURL['path'],0,strrpos($ParsedURL['path'],'/'));
 		$host_url = $ParsedURL['host'].$path;		
 		$url = '';*/
@@ -50,6 +50,34 @@ class ScraperUtils
 		}
 		return $imgsrc;
 	}	
+	
+	public function searchUrl($string,$scraper_url)
+	{
+		$imgsrc = '';
+		$ParsedURL = parse_url($scraper_url);
+		$host_url = $ParsedURL['host'];		
+		$url = $this->regex->findURL($string,$host_url);	
+		if (!strlen($url) && strlen($string))
+		{
+			// assume the string is a relative url and that it works if we just add the host_url back on
+			if (substr_compare($string,'/',0,1)!=0)
+			{
+				$url = $host_url.'/'.$string;
+			}
+			else
+			{
+				$url = $host_url.$string;
+			}
+		}
+		// if we don't have 'http' in the url add it. 
+		if (!preg_match('/http/',$url))
+		{
+			// if we found a url inside the string assign it 
+			$url = $ParsedURL['scheme'].'://'.$url;
+		}
+		
+		return $url;
+	}
 	
 	// is a number odd?
 	public function is_odd($num)

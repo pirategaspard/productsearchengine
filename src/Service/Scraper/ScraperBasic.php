@@ -7,7 +7,14 @@ class ScraperBasic extends AbstractScraper
 {
 	public function fetchHtml(): self
 	{
-        $this->html = HtmlDomParser::file_get_html($this->scraper_url,false,null,0);
+		//$this->html = HtmlDomParser::file_get_html($this->scraper_url,false,null,0);
+		try {
+			$this->html = HtmlDomParser::file_get_html($this->scraper_url,false,null,0);
+		}
+		catch (\Exception $e) 
+		{
+			$this->html = ''; // leave html blank. 
+		}
         return $this;
     }
 	
@@ -41,16 +48,36 @@ class ScraperBasic extends AbstractScraper
 				$product = $this->populateProduct($product,$html_result);
 			}
 		}
-		// if we didnt' find an h1 tag that was also in the title we will just guess
-		if ($flags['found_match'] == 0 && count($html_results))
+		/* 
+		 * if we didnt' find an h1 tag that was included in the title we 
+		 * will just guess on what to use for the product name
+		 */
+		if (! $flags['found_match'])
 		{
-			// Let's use the first h1 tag we found and see if we can poplate a Product record
-			$product->setName(trim($html_results[0]->plaintext));
-			$product = $this->populateProduct($product,$html_results[0]);
+			if (count($html_results))
+			{
+				/*
+				 *  if we have both h1 tags and page title, take
+				 *  the page title if its longer
+				 */
+				if(strlen($page_title) > strlen(trim($html_results[0]->plaintext)))
+				{
+					$product->setName($page_title);
+				}
+				else
+				{
+					// otherwise just take the first h1 ...because that's gotta be it right?
+					$product->setName(trim($html_results[0]->plaintext));
+				}
+				$product = $this->populateProduct($product,$html_results[0]);
+			}
 		}
 		else
 		{
-			// We probably won't find anything useful, but lets look at the entire page anyway
+			/*
+			 *  We probably won't find anything useful, but lets look 
+			 * at the entire page anyway and try to find a product
+			 */
 			//$product->setName($page_title);
 			//$product = $this->populateProduct($product,$this->html);
 		}
@@ -68,9 +95,10 @@ class ScraperBasic extends AbstractScraper
 		$anchors = $this->html->find('a');		
 		foreach($anchors as $a)
 		{
-			if(strlen($this->utils->getRegexUtils()->findURL($a->href)) > 0)
+			$url = $this->utils->searchUrl($a->href,$this->getScraperUrl());
+			if(strlen($url) > 0)
 			{
-				$this->urls[] = $this->getNewSource($a->href);
+				$this->urls[] = $this->getNewSource($url);
 			}
 		}
 	}
@@ -132,7 +160,8 @@ class ScraperBasic extends AbstractScraper
 		$meta_canonical_url = $this->html->find("head link[rel=canonical]",0);		
 		if ( $meta_canonical_url )
 		{		
-			$product_url = $meta_canonical_url->href;
+			$product_url = $this->utils->searchUrl($meta_canonical_url->href,$this->getScraperUrl());
+			//$product_url = $meta_canonical_url->href;
 		}
 		else
 		{

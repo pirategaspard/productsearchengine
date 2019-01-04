@@ -13,9 +13,9 @@ abstract class AbstractScraper
 	protected $products = array();
 	protected $urls = array();
 	
-	function __construct(ScraperUtils $scraperutils) 
+	function __construct() 
 	{
-		$this->utils = $scraperutils;
+		$this->utils = new ScraperUtils();
 	}
 	
 	public function setSource($source=null) 
@@ -68,6 +68,7 @@ abstract class AbstractScraper
     {
 		$p = new Product;
 		$p->setSource($this->source);
+		$p->setDateLastUpdated();
 		return $p;
 	}
 	
@@ -76,6 +77,7 @@ abstract class AbstractScraper
 		$s = new Source;
 		$s->setUrl($url);
 		$s->setIdCode($this->createKey($s));
+		$s->setDateLastUpdated();
 		return $s;
 	}
 	

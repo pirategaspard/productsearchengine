@@ -36,42 +36,61 @@ class RobotService
 		$data_count['urls'] = 0;
 		$product_repository = $this->ManagerRegistry->getRepository(Product::class);
 		$source_repository = $this->ManagerRegistry->getRepository(Source::class);
-		// Step 2) Loop over sources and check the source urls for products
+		// Step 2) Loop over sources and check the source urls for products & urls
 		foreach ($sources as $source)
-		{				
-			// Step 2a) look for products at the source url
-			$data = $this->findData($source->getUrl(),$source);			
-			if (count($data['products']) > 0)
-			{
-				// increment counter 				
-				$data_count['products'] += count($data['products']);
-				// save all the listings
-				foreach($data['products'] as $p)
+		{							
+			// Get the data!
+			$scraper = $this->findData($source->getUrl(),$source);	
+			// Step 3) Did we find any products at the source url?
+			if (count($scraper->getProducts()) > 0)
+			{				
+				$data_count['products'] += count($scraper->getProducts()); // increment counter
+				// 3a) loop over the products and save
+				foreach($scraper->getProducts() as $p)
 				{					
-					// Step 2b) delete existing product (if it exists)
+					// Step 3b) delete existing product (if it exists)
 					$product_repository->deleteByIdCode($p->getIdCode());
-					// Step 2c) Save product
+					// Step 3c) Save product					
 					$this->EntityManager->persist($p);
 					$this->EntityManager->flush();	
 				}				
 			}
-			if (count($data['urls']) > 0)
+			// Step 4) if they don't exists already, save the urls that were found for future scraping
+			if (count($scraper->getUrls()) > 0)
 			{
 				// increment counter 				
-				$data_count['urls'] += count($data['urls']);
-				// save all the listings
-				foreach($data['urls'] as $u)
+				$data_count['urls'] += count($scraper->getUrls());
+				foreach($scraper->getUrls() as $u)
 				{					
-					// Step 2b) delete existing product (if it exists)
-					$source_repository->deleteByIdCode($u->getIdCode());
-					// Step 2c) Save product
-					$this->EntityManager->persist($u);
-					$this->EntityManager->flush();
-				}				
+					// Step 4a) have we seen this url before?
+					if(!$source_repository->findOneBy(array('id_code' => $u->getIdCode())))
+					{
+						//$source_repository->deleteByIdCode($u->getIdCode());
+						// Step 4b) If the url doesn't exist, save it! 
+						
+						$this->EntityManager->persist($u);
+						$this->EntityManager->flush();
+					}
+				}
 			}
+			unset($scraper); // clean up 
 		}
 		return $data_count;
 	}
+	
+	public function findData($url,$source=null)
+	{		
+		$scraper = new ScraperBasic();
+		$scraper->setScraperUrl($url);
+		$scraper->setSource($source);
+		$scraper->fetchHtml(); // load the HTML for the url
+		if ( $scraper->hasHtml() )
+		{
+			$scraper->parseHtml();  // Examine the HTML for products and urls
+		}
+		return $scraper;
+	}
+	
 	
 	/*
 	public function fetchSourceProducts($source)
@@ -100,23 +119,4 @@ class RobotService
 		return $data_count;
 	}*/
 	
-	public function findData($url,$source=null)
-	{		
-		$data = array();
-		$data['products'] = 0;
-		$data['urls'] = 0;
-		$scraper = $this->ScraperBasic;
-		$scraper->setScraperUrl($url);
-		$scraper->setSource($source);
-		$scraper->fetchHtml();
-		if ( $scraper->hasHtml() )
-		{
-			// Examine the HTML for products and urls
-			$scraper->parseHtml();
-			$data['products'] = $scraper->getProducts();
-			$data['urls'] = $scraper->getUrls();
-		}
-		$scraper->reset(); // free some memory
-		return $data;
-	}
 }

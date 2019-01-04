@@ -105,9 +105,9 @@ class Source
         return $this->date_last_updated;
     }
 
-    public function setDateLastUpdated(?\DateTimeInterface $date_last_updated): self
+    public function setDateLastUpdated(): self
     {
-        $this->date_last_updated = $date_last_updated;
+        $this->date_last_updated = new \DateTime('now');
         return $this;
     }
 
