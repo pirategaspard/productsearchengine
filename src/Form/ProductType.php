@@ -22,8 +22,8 @@ class ProductType extends AbstractType
             ->add('url')
             ->add('data')
             ->add('url_image')
-            ->add('source')
             ->add('save', SubmitType::class, array('label' => 'Save'))
+            //             ->add('source')
         ;
     }
 

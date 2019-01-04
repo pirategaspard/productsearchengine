@@ -32,14 +32,24 @@ class SourceRepository extends ServiceEntityRepository
     
     public function deleteByIdCode($id_code=0)
     {
-		return $this->createQueryBuilder('p')
+		return $this->createQueryBuilder('s')
 			->delete()
-            ->Where('p.id_code = :id_code')
+            ->Where('s.id_code = :id_code')
             ->setParameter('id_code', $id_code)
             ->getQuery()
             ->execute()
         ;
     }
+    
+    public function getNextOldest($limit=5)
+    {
+		// Get the oldest ones first		
+		return $this->createQueryBuilder('s')
+		->select()
+		->orderBy('s.date_last_updated', 'ASC')
+		->setMaxResults($limit) 
+		->getQuery()->getResult();
+	}
 
     // /**
     //  * @return Source[] Returns an array of Source objects

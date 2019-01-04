@@ -25,7 +25,8 @@ class RobotService
     {
 		// Step 1) get list of urls from existing sources				
 		$source_repository = $this->ManagerRegistry->getRepository(Source::class);
-		$sources = $source_repository->findAll();
+		//$sources = $source_repository->findAll();
+		$sources = $source_repository->getNextOldest(); // get the sources that haven't been looked at for a while
 		return $this->fetchAllSourcesData($sources);				
 	}
 	
@@ -39,7 +40,7 @@ class RobotService
 		// Step 2) Loop over sources and check the source urls for products & urls
 		foreach ($sources as $source)
 		{							
-			// Get the data!
+			// Get the data from this source!
 			$scraper = $this->findData($source->getUrl(),$source);	
 			// Step 3) Did we find any products at the source url?
 			if (count($scraper->getProducts()) > 0)
@@ -67,14 +68,24 @@ class RobotService
 					{
 						// Step 4b) If the url doesn't exist, save it! 					
 						$this->EntityManager->persist($u);
-						$this->EntityManager->flush();
 					}
+					$this->EntityManager->flush();
 				}
 			}
 			unset($scraper); // clean up 
+						
+			/* 
+			 * Step 5) Set a new date so that this source will not get 
+			 * retrieved again until the other sources also get reviewed
+			 */
+			$source->setDateLastUpdated(); 
+			$this->EntityManager->merge($source); 	
+			//var_dump($source->getUrl());
 		}
 		return $data_count;
 	}
+	
+	
 	
 	public function findData($url,$source=null)
 	{		
@@ -89,32 +100,12 @@ class RobotService
 		return $scraper;
 	}
 	
-	
-	/*
+	// for one data source
 	public function fetchSourceProducts($source)
 	{
-		$data_count = array();
-		$data_count['product'] = 0;
-		$data_count['url'] = 0;
-		$product_repository = $this->ManagerRegistry->getRepository(Product::class);
-		$products = array();					
-		// Step 2a) look for products at the source url
-		$products = $this->findProducts($source->getUrl(),$source);
-		if (count($products) > 0)
-		{
-			// increment counter 				
-			$data_count['product'] += count($products);
-			// save all the listings
-			foreach($products as $p)
-			{					
-				// Step 2b) delete existing product (if it exists)
-				$product_repository->deleteByIdCode($p->getIdCode());
-				// Step 2c) Save product
-				$this->EntityManager->persist($p);
-				$this->EntityManager->flush();										
-			}				
-		}
-		return $data_count;
-	}*/
+		$sources = array();
+		$sources[] = $source;		
+		return $this->fetchAllSourcesData($sources);
+	}
 	
 }
