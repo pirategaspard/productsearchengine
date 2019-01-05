@@ -76,15 +76,15 @@ abstract class AbstractScraper
     {
 		$s = new Source;
 		$s->setUrl($url);
-		$s->setIdCode($this->createKey($s));
+		$s->setIdCode($this->createKey($s->getUrl()));
 		$s->setDateLastUpdated();
 		return $s;
 	}
 	
 	// create an id that doesn't change when the Product is rescraped.
-	protected function createKey($obj): string
+	protected function createKey($url): string
 	{
-		return substr(hash('sha256',$this->source->getId().$obj->getUrl()),-50);
+		return substr(hash('sha256',$this->source->getUrl().$url),-50);
 	}
 	
 	// These function must be extended in the child.

@@ -29,6 +29,29 @@ class ProductRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+    
+    //Simple search
+	public function findProductsSimpleSearch($searchstring='')
+    {
+        $r = $this->createQueryBuilder('p')
+            ->Where('p.name LIKE :searchstring')   
+            ->orWhere('p.description LIKE :searchstring')
+            ->orWhere('p.url LIKE :searchstring')
+            ->orWhere('p.url_canonical LIKE :searchstring')
+            ->setParameter('searchstring', '%'.$searchstring.'%')
+            ->orderBy('p.price', 'ASC')
+            ->setMaxResults(100)
+            ->getQuery()
+            ->getResult()
+        ;
+        /*print_r(array(
+        'sql'        => $r->getSQL(),
+        'parameters' => $r->getParameters(),
+        ));
+        die;*/
+        return $r;
+        //->orWhere('p.description LIKE :searchstring')
+    }
 
     // /**
     //  * @return Product[] Returns an array of Product objects

@@ -5,6 +5,8 @@
 	{{ form_widget(form) }}
 	{{ form_end(form) }}
 	{% if source is not null %}
+	<form action="/admin/robot/update/{{source.id}}" method="POST"><input type="hidden" name="id" value="{{source.id}}"><input type="submit" value="Find Products"></form>
+	<br />
 	<form action="/admin/source/{{source.id}}/delete" method="POST"><input type="hidden" name="id" value="{{source.id}}"><input type="submit" value="Delete"></form>
 	{% endif %}
 {% endblock %}

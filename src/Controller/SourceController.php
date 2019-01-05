@@ -18,7 +18,7 @@ class SourceController extends AbstractController
     public function sources() {	
 		$sources = [];
 		$repository = $this->getDoctrine()->getRepository(Source::class);
-		$sources = $repository->findAll();
+		$sources = $repository->getNamedSources(); // get only the starting point urls
 		return $this->render('admin/source/index.html.twig',['results'=>$sources]);
 	}
 	

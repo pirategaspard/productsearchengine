@@ -7,14 +7,34 @@ class ScraperBasic extends AbstractScraper
 {
 	public function fetchHtml(): self
 	{
+		if (!defined('MAX_FILE_SIZE'))
+		{
+			define('MAX_FILE_SIZE', 6000000000); // Amazon pages are huge. 
+		}
+		
 		//$this->html = HtmlDomParser::file_get_html($this->scraper_url,false,null,0);
 		try {
-			$this->html = HtmlDomParser::file_get_html($this->scraper_url,false,null,0);
+			//$this->html = HtmlDomParser::file_get_html($this->scraper_url,false,null,0);
+						
+			$c = curl_init();
+			curl_setopt($c, CURLOPT_URL, $this->scraper_url);
+			curl_setopt($c, CURLOPT_RETURNTRANSFER, TRUE); 
+			curl_setopt($c, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.2 (KHTML, like Gecko) Chrome/5.0.342.3 Safari/533.2');
+			curl_setopt($c, CURLOPT_ENCODING , "gzip");     
+			curl_setopt($c, CURLOPT_TIMEOUT,5); 
+			curl_setopt($c, CURLOPT_FOLLOWLOCATION, TRUE); // Follow redirects
+			$returnstring = curl_exec($c); 
+			$info = curl_getinfo($c); 
+			curl_close($c); 
+			//var_dump($returnstring); die;
+			$this->html = HtmlDomParser::str_get_html("$returnstring");
+			
 		}
 		catch (\Exception $e) 
 		{
 			$this->html = ''; // leave html blank. 
 		}
+		//echo $this->html; die;
         return $this;
     }
 	
@@ -81,11 +101,20 @@ class ScraperBasic extends AbstractScraper
 			//$product->setName($page_title);
 			//$product = $this->populateProduct($product,$this->html);
 		}
+		//var_dump($product); die;
 		// if we created a Product record with a price we can save it. 
 		if ( strlen($product->getPrice()) > 0 )
 		{
-			// set public key. If we recrawl this page we can use this key to find it. 
-			$product->setIdCode($this->createKey($product));
+			// set public key. If we recrawl this page we can use this key to find it. 			
+			if ( strlen($product->getUrlCanonical()) > 0 )
+			{
+				// using a canonical url is preferred. We will have less duplicate products that way
+				$product->setIdCode($this->createKey($product->getUrlCanonical()));
+			}
+			else
+			{
+				$product->setIdCode($this->createKey($product->getUrl()));
+			}
 			$this->products[] = $product;
 		}
 	}
@@ -108,10 +137,19 @@ class ScraperBasic extends AbstractScraper
 		// Do we have a description meta tag?		
 		$product->setDescription($this->findProductDescription());
 		$product->setUrl($this->findProductUrl());
-		$product->setUrlImage($this->findProductImage($html_match));
-		$product->setPrice($this->findProductPrice($html_match));
+		$product->setUrlCanonical($this->findProductCanonicalUrl());		
+		$product->setUrlImage($this->findProductImage($html_match));		
 		//$product->setData($this->utils->getRegexUtils()->cleanText($this->html->plaintext));
-		$product->setData('');
+		$product->setData($product->getName().' '.$product->getDescription().' '.$product->getUrl().' '.$product->getUrlCanonical());
+		$price = $this->findProductPrice($html_match);
+		if (is_numeric($price))
+		{
+			$product->setPrice($price);
+		}
+		else
+		{
+			//echo "(".$price.") is not numeric";
+		}
 		return $product;
 	}
 	
@@ -169,6 +207,18 @@ class ScraperBasic extends AbstractScraper
 			$product_url = $this->getScraperUrl();
 		}*/
 		$product_url = $this->getScraperUrl();
+		return $this->utils->getRegexUtils()->cleanText($product_url);
+	}
+	
+	private function findProductCanonicalUrl(): string
+	{
+		$product_url = '';
+		$meta_canonical_url = $this->html->find("head link[rel=canonical]",0);		
+		if ( $meta_canonical_url )
+		{		
+			$product_url = $this->utils->searchUrl($meta_canonical_url->href,$this->getScraperUrl());
+			//$product_url = $meta_canonical_url->href;
+		}
 		return $this->utils->getRegexUtils()->cleanText($product_url);
 	}
 	
@@ -239,7 +289,7 @@ class ScraperBasic extends AbstractScraper
 			}
 			$i++;
 		}
-		$product_price = preg_replace('/[\.,]/','',$product_price);
+		$product_price = preg_replace('/[,]/','',$product_price); // remove commas
 		return $product_price;
 	}
 	

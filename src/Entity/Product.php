@@ -65,7 +65,12 @@ class Product
      * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="products")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $source;    
+    private $source;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $url_canonical;    
 
     public function getId(): ?int
     {
@@ -156,15 +161,15 @@ class Product
     }    
 
 	public function getSource(): ?Source
-             {
-                 return $this->source;
-             }
+                      {
+                          return $this->source;
+                      }
 
 	public function setSource(?Source $source): self
-             {
-                 $this->source = $source;
-                 return $this;
-             }
+                      {
+                          $this->source = $source;
+                          return $this;
+                      }
 
     public function getIdCode(): ?string
     {
@@ -174,6 +179,18 @@ class Product
     public function setIdCode(string $id_code): self
     {
         $this->id_code = $id_code;
+
+        return $this;
+    }
+
+    public function getUrlCanonical(): ?string
+    {
+        return $this->url_canonical;
+    }
+
+    public function setUrlCanonical(?string $url_canonical): self
+    {
+        $this->url_canonical = $url_canonical;
 
         return $this;
     }

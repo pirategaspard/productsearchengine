@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 {% block content %}
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Product Search</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">Product Search</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           <a class="nav-link" href="/">Return to Search</a>
@@ -11,10 +11,10 @@
     <div class="container-fluid">
       <div class="row">
 		<main role="main" class=" px-4">
-			<form class="form-search" method="post" action="/search">		
+			<form class="form-search" action="/search">		
 				<h2 class="h3 mb-3 font-weight-normal">Enter a Product Below</h2>
-				<label for="inputSearch" class="sr-only">Search</label>
-				<input type="text" id="inputSearch" name="search_text" placeholder="Bicycles" required autofocus>    
+				<label for="search_text" class="sr-only">Search</label>
+				<input type="text" id="search_text" name="search_text" placeholder="Bicycles" required autofocus>    
 				<button class="btn btn-primary" type="submit">Search!</button>
 			</form>
 		</main>

@@ -10,25 +10,18 @@ use App\Entity\Product;
 class SearchController extends AbstractController
 {			
 	/**
-	 * @Route("/search", name="Search Results", methods={"POST"})
+	 * @Route("/search", name="Search Results")
 	 */
     public function search(Request $request) {
-		$repository = $this->getDoctrine()->getRepository(product::class);
-		$products = $repository->findAll();
+		$search_text = $request->get('search_text');
+		$products = $this->getDoctrine()->getRepository(product::class)->findProductsSimpleSearch($search_text);
 		return $this->render('search/results.html.twig',['results'=>$products]);
 	}
 	
 	/**
-	 * @Route("/search", name="Search")
+	 * @Route("/", name="Search Form")
 	 */
-    public function form() {
+    public function form(Request $request) {		
 		return $this->render('search/form.html.twig');
-	}
-	
-	/**
-	 * @Route("/", name="Home")
-	 */
-	public function index() {
-		return $this->form();
 	}
 }

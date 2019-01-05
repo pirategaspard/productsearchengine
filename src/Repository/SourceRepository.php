@@ -30,6 +30,16 @@ class SourceRepository extends ServiceEntityRepository
 		return $this;
 	}
     
+     public function getNamedSources()
+    {
+		// Get the Sources that were added manually	via admin area	
+		return $this->createQueryBuilder('s')
+		->select()
+		->Where('s.title IS NOT NULL')
+		->orderBy('s.date_last_updated', 'ASC')
+		->getQuery()->getResult();
+	}
+    
     public function deleteByIdCode($id_code=0)
     {
 		return $this->createQueryBuilder('s')
@@ -40,6 +50,17 @@ class SourceRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
+    
+    /*
+    public function getNew($limit=5)
+    {
+		// Get the oldest ones first		
+		return $this->createQueryBuilder('s')
+		->select()
+		->orderBy('s.date_last_updated', 'ASC')
+		->setMaxResults($limit) 
+		->getQuery()->getResult();
+	}*/
     
     public function getNextOldest($limit=5)
     {

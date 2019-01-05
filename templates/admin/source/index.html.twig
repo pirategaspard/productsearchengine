@@ -15,7 +15,7 @@
 				<tr>
 					<td><a href="/admin/source/{{result.id}}">{{result.title}}</a></td>
 					<td>{{result.url}}</td>
-					<td><form action="/admin/source/{{result.id}}/delete" method="POST"><input type="hidden" name="id" value="{{result.id}}"><input type="submit" value="Delete"></form></td>
+					<td><a href="/admin/source/{{result.id}}"><input type="button" value="Edit"></a></td>
 				</tr>
 			{% endfor %}			
 			</tbody>

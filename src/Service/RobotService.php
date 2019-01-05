@@ -26,7 +26,7 @@ class RobotService
 		// Step 1) get list of urls from existing sources				
 		$source_repository = $this->ManagerRegistry->getRepository(Source::class);
 		//$sources = $source_repository->findAll();
-		$sources = $source_repository->getNextOldest(); // get the sources that haven't been looked at for a while
+		$sources = $source_repository->getNextOldest(10); // get the sources that haven't been looked at for a while
 		return $this->fetchAllSourcesData($sources);				
 	}
 	
@@ -88,14 +88,21 @@ class RobotService
 	
 	
 	public function findData($url,$source=null)
-	{		
+	{				
 		$scraper = new ScraperBasic();
 		$scraper->setScraperUrl($url);
 		$scraper->setSource($source);
+		
+		// TODO: check robots.txt before scraping		
+		
 		$scraper->fetchHtml(); // load the HTML for the url
 		if ( $scraper->hasHtml() )
 		{
 			$scraper->parseHtml();  // Examine the HTML for products and urls
+		}
+		else
+		{
+			//echo 'unable to load page for:'.$url; die;
 		}
 		return $scraper;
 	}
@@ -104,7 +111,7 @@ class RobotService
 	public function fetchSourceProducts($source)
 	{
 		$sources = array();
-		$sources[] = $source;		
+		$sources[] = $source;			
 		return $this->fetchAllSourcesData($sources);
 	}
 	
