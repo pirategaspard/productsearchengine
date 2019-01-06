@@ -14,17 +14,19 @@ class ProductController extends AbstractController
 	/**
 	 * @Route("/admin/product", name="products")
 	 */
-    public function products() {	
-		$products = [];
+    public function products(Request $request) {
+		$offset = $request->get('offset',0);
+		$url = $this->generateUrl('products');
+		$route='products';
 		$repository = $this->getDoctrine()->getRepository(product::class);
-		$products = $repository->findAll();
-		return $this->render('admin/product/index.html.twig',['results'=>$products]);
+		$products = $repository->findNext($offset);
+		return $this->render('admin/product/index.html.twig',['results'=>$products, 'route'=>$route, 'offset'=>$offset]);
 	}
 	
 	/**
 	 * @Route("/admin/product/{id}", name="product Form", methods={"GET"})
 	 */
-    public function product_form($id=0) {			
+	public function product_form($id=0) {			
 		$product = $this->get_product($id);
 		$form = $this->createForm(ProductType::class, $product);
 		return $this->render('admin/product/form.html.twig',['form' => $form->createView(),'product'=>$product]);
