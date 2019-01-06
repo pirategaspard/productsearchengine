@@ -14,7 +14,8 @@ class SearchController extends AbstractController
 	 */
     public function search(Request $request) {
 		$search_text = $request->get('search_text');
-		$products = $this->getDoctrine()->getRepository(product::class)->findProductsSimpleSearch($search_text);
+		//$products = $this->getDoctrine()->getRepository(product::class)->findProductsSimpleSearch($search_text);
+		$products = $this->getDoctrine()->getRepository(product::class)->findProductFullTextSearch($search_text);
 		return $this->render('search/results.html.twig',['results'=>$products]);
 	}
 	
