@@ -64,7 +64,7 @@ class ScraperBasic extends AbstractScraper
 			{
 				// We founda  match! Use this h1 as the product name
 				$flags['found_match'] = 1;
-				$product->setName($h);
+				$product->setName(substr($h,0,255));
 				$product = $this->populateProduct($product,$html_result);
 			}
 		}
@@ -87,7 +87,7 @@ class ScraperBasic extends AbstractScraper
 				else
 				{
 					// otherwise just take the first h1 ...because that's gotta be it right?
-					$product->setName(trim($html_results[0]->plaintext));
+					$product->setName(substr(trim($html_results[0]->plaintext),0,255));
 				}
 				$product = $this->populateProduct($product,$html_results[0]);
 			}
@@ -168,7 +168,7 @@ class ScraperBasic extends AbstractScraper
 			// otherwise use the page title
 			$page_title = $this->html->find("title", 0)->plaintext; 
 		}		
-		return $this->utils->getRegexUtils()->cleanText($page_title);
+		return substr($this->utils->getRegexUtils()->cleanText($page_title),0,255);
 	}
 	
 	private function findProductDescription(): string
@@ -189,7 +189,7 @@ class ScraperBasic extends AbstractScraper
 				$product_description = $meta_description->content; 	// if we have a meta tag defined use it
 			}
 		}
-		return $this->utils->getRegexUtils()->cleanText($product_description);
+		return substr($this->utils->getRegexUtils()->cleanText($product_description),0,255);
 	}
 	
 	private function findProductUrl(): string
