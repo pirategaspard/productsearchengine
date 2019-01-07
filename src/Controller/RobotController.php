@@ -8,7 +8,7 @@ use Symfony\Component\Debug;
 use App\Service\RobotService;
 use App\Entity\Source;
 
-class robotController extends AbstractController
+class RobotController extends AbstractController
 {			
 	/**
 	 * @Route("/admin/robot", name="Robots")
