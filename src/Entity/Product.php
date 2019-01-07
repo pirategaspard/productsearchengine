@@ -47,7 +47,7 @@ class Product
     private $url;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=510, nullable=true)
      */
     private $url_image;
     
