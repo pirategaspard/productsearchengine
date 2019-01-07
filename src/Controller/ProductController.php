@@ -16,7 +16,7 @@ class ProductController extends AbstractController
 	 */
     public function products(Request $request) {
 		$offset = $request->get('offset',0);
-		$route='products';
+		$route='Products';
 		$repository = $this->getDoctrine()->getRepository(product::class);
 		$products = $repository->findNext($offset);
 		return $this->render('admin/product/index.html.twig',['results'=>$products, 'route'=>$route, 'offset'=>$offset]);
@@ -47,7 +47,7 @@ class ProductController extends AbstractController
 		{
 			//die('oops');
 		}
-		return $this->redirectToRoute('products');
+		return $this->redirectToRoute('Products');
 	}
 	
 	/**
@@ -58,7 +58,7 @@ class ProductController extends AbstractController
 		$entityManager = $this->getDoctrine()->getManager();
 		$entityManager->remove($product);
 		$entityManager->flush();
-		return $this->redirectToRoute('products');
+		return $this->redirectToRoute('Products');
 	}
 	
 	private function get_product($id=0)
