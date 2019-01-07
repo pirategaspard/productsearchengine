@@ -6,6 +6,7 @@
 			<thead>
 				<tr>
 					<td>Title</td>
+					<td>Last Updated</td>
 					<td>Url</td>
 					<td></td>
 				</tr>
@@ -13,8 +14,9 @@
 			<tbody>
 			{% for result in results %}
 				<tr>
-					<td><a href="{{ path('Source_Form',{'id':result.id})}}">{{result.title}}</a></td>
-					<td>{{result.url}}</td>
+					<td><a href="{{ path('Source_Form',{'id':result.id})}}">{{result.title}}</a></td>					
+					<td>{%if result.DateLastUpdated is not empty %}{{ result.DateLastUpdated|date('Y-m-d H:i:s') }}{% endif %}</td>
+					<td>{{ result.url }}</td>
 					<td><a href="{{ path('Source_Form',{'id':result.id})}}"><input type="button" value="Edit"></a></td>
 				</tr>
 			{% endfor %}			

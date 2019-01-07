@@ -79,7 +79,8 @@ class RobotService
 			 * retrieved again until the other sources also get reviewed
 			 */
 			$source->setDateLastUpdated(); 
-			$this->EntityManager->merge($source); 	
+			$this->EntityManager->merge($source); 
+			$this->EntityManager->flush();	
 			//var_dump($source->getUrl());
 		}
 		return $data_count;

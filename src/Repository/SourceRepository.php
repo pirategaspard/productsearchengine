@@ -80,7 +80,7 @@ class SourceRepository extends ServiceEntityRepository
 	
 	public function findNext($offset=0,$limit=20)
 	{		
-		$dql = "SELECT s FROM App\Entity\Source s";
+		$dql = "SELECT s FROM App\Entity\Source s ORDER BY s.date_last_updated ASC";
 		$q = $this->getEntityManager()->createQuery($dql);
 		$p = new Paginator($q,$offset,$limit);
 		$p->getQuery()
