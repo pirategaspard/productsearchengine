@@ -42,7 +42,7 @@ class Product
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=2040)
      */
     private $url;
 
