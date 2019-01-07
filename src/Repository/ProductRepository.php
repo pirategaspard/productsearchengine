@@ -73,7 +73,7 @@ class ProductRepository extends ServiceEntityRepository
 	
 	public function findNext($offset=0,$limit=8)
 	{		
-		$dql = "SELECT p FROM App\Entity\Product p";
+		$dql = "SELECT p FROM App\Entity\Product p ORDER BY p.date_last_updated ASC";
 		$q = $this->getEntityManager()->createQuery($dql);
 		$p = new Paginator($q,$offset,$limit);
 		$p->getQuery()
