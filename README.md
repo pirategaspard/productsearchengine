@@ -11,6 +11,6 @@ Once app is running
 Navigate to the admin area and click on "Add Source" to create a starting point for the search engine.
 Then click the link "Scan Next 5 Sources for New Product" to get some products. 
 
-
+Live demo: http://productsearch.danielgaspar.com
 
 
