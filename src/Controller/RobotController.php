@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug;
 use App\Service\RobotService;
 use App\Entity\Source;
+use App\Entity\Product;
 
 class RobotController extends AbstractController
 {			
@@ -39,7 +40,9 @@ class RobotController extends AbstractController
 	 * @Route("/admin/robot/resetAll", name="Robots_ResetAll")
 	 */
 	public function resetAll(RobotService $RobotService) {
-		// TODO 
+		$this->getDoctrine()->getRepository(product::class)->removeAllProducts();
+		$this->getDoctrine()->getRepository(source::class)->removeAllSources();
+		return $this->redirectToRoute('Products');
 	}
 
 }

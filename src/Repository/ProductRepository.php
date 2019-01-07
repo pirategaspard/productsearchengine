@@ -82,4 +82,16 @@ class ProductRepository extends ServiceEntityRepository
 		//echo count($p); die;
 		return $p;
 	}
+	
+	// when you want to clear all your data and start over
+	public function removeAllProducts(): self
+    {	
+		// "Nuke it from orbit. Its the only way to be sure"		
+		$sql = "TRUNCATE TABLE product";
+		$conn = $this->getEntityManager()->getConnection();
+		$q = $conn->prepare($sql);
+		$q->execute();
+		return $this;
+	}
+	
 }

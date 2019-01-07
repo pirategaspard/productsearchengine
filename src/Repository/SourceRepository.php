@@ -30,6 +30,17 @@ class SourceRepository extends ServiceEntityRepository
 		$q->execute();
 		return $this;
 	}
+	
+	// when you want to clear all your data and start over
+	public function removeAllSources(): self
+    {	
+		// "Nuke it from orbit. Its the only way to be sure"		
+		$sql = "DELETE FROM source"; // TRUNCATE TABLE throws an error sometimes related to the product FK even when all the products are deleted. not sure why
+		$conn = $this->getEntityManager()->getConnection();
+		$q = $conn->prepare($sql);
+		$q->execute();
+		return $this;
+	}
     
 	public function getNamedSources($offset=0,$limit=5)
     {
