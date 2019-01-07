@@ -23,7 +23,7 @@ class robotController extends AbstractController
 	public function updateAll(RobotService $RobotService) {
 		set_time_limit(100); // this process take a while
 		$result_data = $RobotService->fetchAllSourcesUpdates();
-		return $this->redirectToRoute('products');
+		return $this->redirectToRoute('Products');
 	}
 	
 	/**
@@ -32,7 +32,7 @@ class robotController extends AbstractController
 	public function updateSpecific(RobotService $RobotService, $id=0) {
 		$source = $this->getDoctrine()->getRepository(source::class)->find($id);
 		$result_data = $RobotService->fetchSourceProducts($source);
-		return $this->redirectToRoute('products');
+		return $this->redirectToRoute('Products');
 	}
 	
 	/**
