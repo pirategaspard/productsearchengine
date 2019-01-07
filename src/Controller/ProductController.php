@@ -12,11 +12,10 @@ use App\Form\ProductType;
 class ProductController extends AbstractController
 {				
 	/**
-	 * @Route("/admin/product", name="products")
+	 * @Route("/admin/product", name="Products")
 	 */
     public function products(Request $request) {
 		$offset = $request->get('offset',0);
-		$url = $this->generateUrl('products');
 		$route='products';
 		$repository = $this->getDoctrine()->getRepository(product::class);
 		$products = $repository->findNext($offset);
@@ -24,7 +23,7 @@ class ProductController extends AbstractController
 	}
 	
 	/**
-	 * @Route("/admin/product/{id}", name="product Form", methods={"GET"})
+	 * @Route("/admin/product/{id}", name="Product_Form", methods={"GET"})
 	 */
 	public function product_form($id=0) {			
 		$product = $this->get_product($id);
@@ -33,7 +32,7 @@ class ProductController extends AbstractController
 	}
 	
 	/**
-	 * @Route("/admin/product/{id}", name="product Save", methods={"POST"})
+	 * @Route("/admin/product/{id}", name="Product_Save", methods={"POST"})
 	 */
     public function product_save(Request $request) {	//product $product=null, 	
 		$product = $this->get_product($request->request->get('product')['id']);
@@ -52,7 +51,7 @@ class ProductController extends AbstractController
 	}
 	
 	/**
-	 * @Route("/admin/product/{id}/delete", name="product delete", methods={"POST"})
+	 * @Route("/admin/product/{id}/delete", name="Product_Delete", methods={"POST"})
 	 */
     public function product_delete($id=0) {			
 		$product = $this->get_product($id);

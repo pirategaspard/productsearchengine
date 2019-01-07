@@ -1,6 +1,6 @@
 {% extends "admin/index.html.twig" %}
 {% block datatable %}
-	<h2>Sources</h2>
+	<h2>{{ results|length }} Sources</h2>
 	<div class="table-responsive">
 		<table class="table table-striped table-sm">
 			<thead>
@@ -13,13 +13,19 @@
 			<tbody>
 			{% for result in results %}
 				<tr>
-					<td><a href="/admin/source/{{result.id}}">{{result.title}}</a></td>
+					<td><a href="{{ path('Source_Form',{'id':result.id})}}">{{result.title}}</a></td>
 					<td>{{result.url}}</td>
-					<td><a href="/admin/source/{{result.id}}"><input type="button" value="Edit"></a></td>
+					<td><a href="{{ path('Source_Form',{'id':result.id})}}"><input type="button" value="Edit"></a></td>
 				</tr>
 			{% endfor %}			
 			</tbody>
 		</table>
+		{% if offset > 0 and offset < results|length %}
+			<a href="{{ path(route, {'all':all,'offset': offset-20}) }}">Previous page</a>	
+		{% endif %}
+		{% if offset+20 < results|length %}
+			<a href="{{ path(route, {'all':all,'offset': offset+20}) }}">Next page</a>	
+		{% endif %}
 	</div>
 	
 {% endblock %}

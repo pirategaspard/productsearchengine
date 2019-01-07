@@ -5,6 +5,6 @@
 	{{ form_widget(form) }}
 	{{ form_end(form) }}
 	{% if product is not null %}
-	<form action="/admin/product/{{product.id}}/delete" method="POST"><input type="hidden" name="id" value="{{product.id}}"><input type="submit" value="Delete"></form>
+	<form action="{{ path('Product_Delete',{'id':product.id}) }}" method="POST"><input type="hidden" name="id" value="{{product.id}}"><input type="submit" value="Delete"></form>
 	{% endif %}
 {% endblock %}

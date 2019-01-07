@@ -9,7 +9,7 @@ use Symfony\Component\Debug;
 class AdminController extends AbstractController
 {			
 	/**
-	 * @Route("/admin", name="admin")
+	 * @Route("/admin", name="Admin")
 	 */
     public function index() {		
 		return $this->render('admin/index.html.twig');

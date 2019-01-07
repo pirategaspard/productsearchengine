@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Source;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -30,14 +31,19 @@ class SourceRepository extends ServiceEntityRepository
 		return $this;
 	}
     
-     public function getNamedSources()
+	public function getNamedSources($offset=0,$limit=5)
     {
 		// Get the Sources that were added manually	via admin area	
-		return $this->createQueryBuilder('s')
+		$q = $this->createQueryBuilder('s')
 		->select()
 		->Where('s.title IS NOT NULL')
 		->orderBy('s.date_last_updated', 'ASC')
-		->getQuery()->getResult();
+		->getQuery();
+		$p = new Paginator($q,$offset,$limit);
+		$p->getQuery()
+			->setFirstResult($offset)
+			->setMaxResults($limit);
+		return $p;
 	}
     
     public function deleteByIdCode($id_code=0)
@@ -50,18 +56,7 @@ class SourceRepository extends ServiceEntityRepository
             ->execute()
         ;
     }
-    
-    /*
-    public function getNew($limit=5)
-    {
-		// Get the oldest ones first		
-		return $this->createQueryBuilder('s')
-		->select()
-		->orderBy('s.date_last_updated', 'ASC')
-		->setMaxResults($limit) 
-		->getQuery()->getResult();
-	}*/
-    
+        
     public function getNextOldest($limit=5)
     {
 		// Get the oldest ones first		
@@ -70,6 +65,17 @@ class SourceRepository extends ServiceEntityRepository
 		->orderBy('s.date_last_updated', 'ASC')
 		->setMaxResults($limit) 
 		->getQuery()->getResult();
+	}
+	
+	public function findNext($offset=0,$limit=20)
+	{		
+		$dql = "SELECT s FROM App\Entity\Source s";
+		$q = $this->getEntityManager()->createQuery($dql);
+		$p = new Paginator($q,$offset,$limit);
+		$p->getQuery()
+			->setFirstResult($offset)
+			->setMaxResults($limit);
+		return $p;
 	}
 
     // /**

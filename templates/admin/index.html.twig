@@ -1,10 +1,10 @@
 {% extends "base.html.twig" %}
 {% block content %}
 	<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="admin/">Product Search Admin</a>
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('Admin') }}">Product Search Admin</a>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="/">Return to Search</a>
+          <a class="nav-link" href="{{ path('Search Form')}}">Return to Search</a>
         </li>
       </ul>
     </nav>
@@ -15,30 +15,35 @@
             <ul class="nav flex-column">
 				<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
 				  <span>Sources</span>
-				  <a class="d-flex align-items-center text-muted" href="/admin/source">
+				  <a class="d-flex align-items-center text-muted" href="{{ path('Sources')}}">
 					<span data-feather="plus-circle"></span>
 				  </a>
 				</h6>
 				<li class="nav-item">
-					<a class="nav-link" href="/admin/source">
+					<a class="nav-link" href="{{ path('Sources')}}">
 					<span data-feather="file-text"></span>
-					View Sources
+					View Named Sources
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/admin/source/0">
+					<a class="nav-link" href="{{ path('Sources', {'all':'true'} )}}">
+					<span data-feather="file-text"></span>
+					View All Sources
+					</a>
+				</li>				<li class="nav-item">
+					<a class="nav-link" href="{{ path('Source_Form')}}/0">
 					<span data-feather="file-text"></span>
 					Add Source
 					</a>
 				</li>
 				<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
 				  <span>Products</span>
-				  <a class="d-flex align-items-center text-muted" href="/admin/product">
+				  <a class="d-flex align-items-center text-muted" href="{{ path('Products')}}">
 					<span data-feather="plus-circle"></span>
 				  </a>
 				</h6>
 				<li class="nav-item">
-					<a class="nav-link" href="/admin/product">
+					<a class="nav-link" href="{{ path('Products')}}">
 					<span data-feather="file-text"></span>
 					View Product
 					</a>
@@ -50,13 +55,13 @@
 				  </a>
 				</h6>
 				<li class="nav-item">
-					<a class="nav-link" href="/admin/robot/updateAll">
+					<a class="nav-link" href="{{ path('Robots_UpdateAll')}}">
 					<span data-feather="file-text"></span>
 					Scan Next 5 Sources for new Products
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/admin/robot/resetAll">
+					<a class="nav-link" href="{{ path('Robots_ResetAll')}}">
 					<span data-feather="file-text"></span>
 					Clear database
 					</a>

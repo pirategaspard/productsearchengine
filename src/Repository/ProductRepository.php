@@ -71,44 +71,15 @@ class ProductRepository extends ServiceEntityRepository
 		return $q->getResult();
 	}
 	
-	public function findNext($offset=0,$limit=5)
+	public function findNext($offset=0,$limit=8)
 	{		
 		$dql = "SELECT p FROM App\Entity\Product p";
 		$q = $this->getEntityManager()->createQuery($dql);
 		$p = new Paginator($q,$offset,$limit);
 		$p->getQuery()
 			->setFirstResult($offset)
-			->setMaxResults($limit); // Limit
+			->setMaxResults($limit);
 		//echo count($p); die;
 		return $p;
 	}
-
-    // /**
-    //  * @return Product[] Returns an array of Product objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Product
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

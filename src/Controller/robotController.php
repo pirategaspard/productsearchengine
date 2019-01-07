@@ -11,14 +11,14 @@ use App\Entity\Source;
 class robotController extends AbstractController
 {			
 	/**
-	 * @Route("/admin/robot", name="robots")
+	 * @Route("/admin/robot", name="Robots")
 	 */
     public function index() {		
 		return $this->render('admin/index.html.twig');
 	}
 	
 	/**
-	 * @Route("/admin/robot/updateAll", name="robots updateAll")
+	 * @Route("/admin/robot/updateAll", name="Robots_UpdateAll")
 	 */
 	public function updateAll(RobotService $RobotService) {
 		set_time_limit(100); // this process take a while
@@ -27,12 +27,19 @@ class robotController extends AbstractController
 	}
 	
 	/**
-	 * @Route("/admin/robot/update/{id}", name="robots update source")
+	 * @Route("/admin/robot/update/{id}", name="Robot_Update_Source")
 	 */
 	public function updateSpecific(RobotService $RobotService, $id=0) {
 		$source = $this->getDoctrine()->getRepository(source::class)->find($id);
 		$result_data = $RobotService->fetchSourceProducts($source);
 		return $this->redirectToRoute('products');
+	}
+	
+	/**
+	 * @Route("/admin/robot/resetAll", name="Robots_ResetAll")
+	 */
+	public function resetAll(RobotService $RobotService) {
+		// TODO 
 	}
 
 }

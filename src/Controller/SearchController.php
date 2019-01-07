@@ -10,7 +10,7 @@ use App\Entity\Product;
 class SearchController extends AbstractController
 {			
 	/**
-	 * @Route("/search", name="Search Results")
+	 * @Route("/search", name="Search_Results")
 	 */
     public function search(Request $request) {
 		$search_text = $request->get('search_text');
@@ -20,7 +20,7 @@ class SearchController extends AbstractController
 	}
 	
 	/**
-	 * @Route("/", name="Search Form")
+	 * @Route("/", name="Search_Form")
 	 */
     public function form(Request $request) {		
 		return $this->render('search/form.html.twig');

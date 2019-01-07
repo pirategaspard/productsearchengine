@@ -16,19 +16,19 @@
 		{% for result in results %}
 			<tr>
 				<td><img src="{{result.UrlImage}}" width="50" /></td>
-				<td><a href="admin/product/{{result.id}}">{{result.name}}</a></td>
+				<td><a href="{{ path('Product_Form',{'id':result.id}) }}">{{result.name}}</a></td>
 				<td>${{result.price}}</td>				
 				<td><a href="{{result.url}}" target="_blank">visit source</a></td>
-				<td><a href="admin/product/{{result.id}}" method="POST"><input type="submit" value="Edit"></a></td>
+				<td><a href="{{ path('Product_Form',{'id':result.id}) }}" method="POST"><input type="submit" value="Edit"></a></td>
 				<!--<td><form action="/admin/product/{{result.id}}/delete" method="POST"><input type="hidden" name="id" value="{{result.id}}"><input type="submit" value="Delete"></form></td>-->
 			</tr>
 		{% endfor %}
 		</table>
 		{% if offset > 0 and offset < results|length %}
-			<a href="{{ path(route, {'offset': offset-5}) }}">Previous page</a>	
+			<a href="{{ path(route, {'offset': offset-8}) }}">Previous page</a>	
 		{% endif %}
-		{% if offset+5 < results|length %}
-			<a href="{{ path(route, {'offset': offset+5}) }}">Next page</a>	
-		{% endif %}		
+		{% if offset+8 < results|length %}
+			<a href="{{ path(route, {'offset': offset+8}) }}">Next page</a>	
+		{% endif %}
 	</div>
 {% endblock %}

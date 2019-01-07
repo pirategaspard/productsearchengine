@@ -15,15 +15,24 @@ class SourceController extends AbstractController
 	/**
 	 * @Route("/admin/source", name="Sources")
 	 */
-    public function sources() {	
-		$sources = [];
+    public function sources(Request $request) {	
+		$all = $request->get('all',false);
+		$offset = $request->get('offset',0);
+		$route='Sources';
 		$repository = $this->getDoctrine()->getRepository(Source::class);
-		$sources = $repository->getNamedSources(); // get only the starting point urls
-		return $this->render('admin/source/index.html.twig',['results'=>$sources]);
+		if ( $all )
+		{
+			$sources = $repository->findNext($offset);
+		}
+		else
+		{
+			$sources = $repository->getNamedSources($offset); // get only the starting point urls
+		}		
+		return $this->render('admin/source/index.html.twig',['results'=>$sources, 'route'=>$route, 'offset'=>$offset, 'all'=>$all]);
 	}
 	
 	/**
-	 * @Route("/admin/source/{id}", name="Source Form", methods={"GET"})
+	 * @Route("/admin/source/{id}", name="Source_Form", methods={"GET"})
 	 */
     public function source_form($id=0) {			
 		$source = $this->get_source($id);
@@ -32,7 +41,7 @@ class SourceController extends AbstractController
 	}
 	
 	/**
-	 * @Route("/admin/source/{id}", name="Source Save", methods={"POST"})
+	 * @Route("/admin/source/{id}", name="Source_Save", methods={"POST"})
 	 */
     public function source_save(Request $request) {	//Source $source=null, 	
 		/*dump($request->request->get('source')['id']);
@@ -53,7 +62,7 @@ class SourceController extends AbstractController
 	}
 	
 	/**
-	 * @Route("/admin/source/{id}/delete", name="Source delete", methods={"POST"})
+	 * @Route("/admin/source/{id}/delete", name="Source_Delete", methods={"POST"})
 	 */
     public function source_delete($id=0) {			
 		$source = $this->get_source($id);
