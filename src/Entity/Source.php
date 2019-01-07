@@ -36,7 +36,7 @@ class Source
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=2040)
      */
     private $url;
 
