@@ -28,12 +28,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=4
-FILE_NAME_0=3199;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FRobotService.php;0;4
-FILE_NAME_1=831;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FController%2FrobotController.php;0;4
-FILE_NAME_2=1050;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FScraper%2FScraperBasic.php;0;4
-FILE_NAME_3=5059;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fvendor%2Fsunra%2Fphp-simple-html-dom-parser%2FSrc%2FSunra%2FPhpSimple%2Fsimplehtmldom_1_5%2Fsimple_html_dom.php;0;4
-FILE_NAME_4=3589;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fraremusician%2Fr2%2Fraremusician2%2Fclasses%2Fmodel%2Fadmin%2Flistingsmanager.php;0;4
+current_page=5
+FILE_NAME_0=2924;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FRobotService.php;0;4
+FILE_NAME_1=2235;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FRepository%2FSourceRepository.php;0;4
+FILE_NAME_2=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FEntity%2FProduct.php;0;4
+FILE_NAME_3=448;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fadmin%2Fsource%2Findex.html.twig;0;4
+FILE_NAME_4=645;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fadmin%2Fproduct%2Findex.html.twig;0;4
+FILE_NAME_5=1454;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FScraper%2FAbstractScraper.php;0;4
+FILE_NAME_6=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FScraper%2FScraperBasic.php;0;4
 
 [VTE]
 last_dir=/home/pirategaspard

@@ -57,6 +57,11 @@ class Product
     private $date_last_updated;
     
     /**
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $date_added;
+    
+    /**
      * @ORM\Column(type="text")
      */
     private $data;
@@ -146,6 +151,20 @@ class Product
     public function setDateLastUpdated(): self
     {
         $this->date_last_updated = new \DateTime('now');
+        return $this;
+    }
+    
+    public function getDateAdded(): ?\DateTimeInterface
+    {
+        return $this->date_added;
+    }
+
+    public function setDateAdded($date=''): self  // have to allow this function to accept a value for the formbuilder
+    {
+		if ( $this->date_added == null )
+		{
+			$this->date_added = new \DateTime('now');
+		}
         return $this;
     }
     

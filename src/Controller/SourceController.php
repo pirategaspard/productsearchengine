@@ -46,7 +46,7 @@ class SourceController extends AbstractController
     public function source_save(Request $request) {	//Source $source=null, 	
 		/*dump($request->request->get('source')['id']);
 		die('hi');*/
-		$source = $this->get_source($request->request->get('source')['id']);
+		$source = $this->get_source($request->get('id'));
 		$form = $this->createForm(SourceType::class, $source)->handleRequest($request);
 		if ($form->isSubmitted() ) {  //&& $form->isValid()
 			$source = $form->getData();

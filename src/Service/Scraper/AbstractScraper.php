@@ -68,6 +68,7 @@ abstract class AbstractScraper
     {
 		$p = new Product;
 		$p->setSource($this->source);
+		$p->setDateAdded();
 		$p->setDateLastUpdated();
 		return $p;
 	}
@@ -77,6 +78,7 @@ abstract class AbstractScraper
 		$s = new Source;
 		$s->setUrl($url);
 		$s->setIdCode($this->createKey($s->getUrl()));
+		$s->setDateAdded();
 		//$s->setDateLastUpdated();  // leave Date null since we haven't looked for products at this url yet
 		return $s;
 	}
