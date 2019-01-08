@@ -1,0 +1,41 @@
+{% extends "admin/index.html.twig" %}
+{% block datatable %}
+	<h2>Product Search Data Statistics</h2>
+	<div class="table-responsive">
+		<h3>Product</h3>
+		<table class="table" >
+			<thead>
+				<tr>
+					<td>Total</td>					
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ count.ProductsTotal }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>Source</h3>
+		<table class="table" >
+			<thead>
+				<tr>
+					<td>Total</td>					
+					<td>Visited</td>
+					<td>To Visit</td>
+					<td>Named</td>
+					<td>Un Named</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ count.SourcesTotal }}</td>
+					<td>{{ count.SourcesVisitedTotal }}</td>
+					<td>{{ count.SourcesNotVisitedTotal }}</td>
+					<td>{{ count.SourcesNamedTotal }}</td>
+					<td>{{ count.SourcesUnnamedTotal }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+{% endblock %}

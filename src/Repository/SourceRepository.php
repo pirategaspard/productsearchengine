@@ -88,6 +88,45 @@ class SourceRepository extends ServiceEntityRepository
 			->setMaxResults($limit);
 		return $p;
 	}
+	
+	public function getCountSourcesTotal(): int
+	{
+		$q = $this->createQueryBuilder('s');
+		$q->select('count(s.id)');
+		return $q->getQuery()->getSingleScalarResult();
+	}
+	
+	public function getCountSourcesNamedTotal(): int
+	{
+		$q = $this->createQueryBuilder('s');
+		$q->select('count(s.id)');
+		$q->Where('s.title IS NOT NULL');
+		return $q->getQuery()->getSingleScalarResult();
+	}
+	
+	public function getCountSourcesUnnamedTotal(): int
+	{
+		$q = $this->createQueryBuilder('s');
+		$q->select('count(s.id)');
+		$q->Where('s.title IS NULL');
+		return $q->getQuery()->getSingleScalarResult();
+	}
+	
+	public function getCountSourcesVisitedTotal(): int
+	{
+		$q = $this->createQueryBuilder('s');
+		$q->select('count(s.id)');
+		$q->Where('s.date_last_updated IS NOT NULL');
+		return $q->getQuery()->getSingleScalarResult();
+	}
+	
+	public function getCountSourcesNotVisitedTotal(): int
+	{
+		$q = $this->createQueryBuilder('s');
+		$q->select('count(s.id)');
+		$q->Where('s.date_last_updated IS NULL');
+		return $q->getQuery()->getSingleScalarResult();
+	}
 
     // /**
     //  * @return Source[] Returns an array of Source objects
