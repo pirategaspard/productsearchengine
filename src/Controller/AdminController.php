@@ -17,14 +17,15 @@ class AdminController extends AbstractController
     public function index() {
 		$source_repo = $this->getDoctrine()->getRepository(Source::class);
 		$product_repo = $this->getDoctrine()->getRepository(Product::class);
-		$count = array();
-		$count['ProductsTotal'] = $product_repo->getCountProductsTotal();
-		$count['SourcesTotal'] = $source_repo->getCountSourcesTotal();
-		$count['SourcesNamedTotal'] = $source_repo->getCountSourcesNamedTotal();
-		$count['SourcesUnnamedTotal'] = $source_repo->getCountSourcesUnnamedTotal();
-		$count['SourcesVisitedTotal'] = $source_repo->getCountSourcesVisitedTotal();
-		$count['SourcesNotVisitedTotal'] = $source_repo->getCountSourcesNotVisitedTotal();
-		return $this->render('admin/admindata.html.twig',['count'=>$count]);
+		$data = array();
+		$data['ProductsTotal'] = $product_repo->getCountProductsTotal();
+		$data['ProductsFoundPerDay'] = $product_repo->getProductsFoundPerDay();
+		$data['SourcesTotal'] = $source_repo->getCountSourcesTotal();
+		$data['SourcesNamedTotal'] = $source_repo->getCountSourcesNamedTotal();
+		$data['SourcesUnnamedTotal'] = $source_repo->getCountSourcesUnnamedTotal();
+		$data['SourcesVisitedTotal'] = $source_repo->getCountSourcesVisitedTotal();
+		$data['SourcesNotVisitedTotal'] = $source_repo->getCountSourcesNotVisitedTotal();		
+		return $this->render('admin/admindata.html.twig',['data'=>$data]);
 	}
 	
 

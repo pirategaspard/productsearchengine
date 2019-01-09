@@ -101,4 +101,25 @@ class ProductRepository extends ServiceEntityRepository
 		return $q->getQuery()->getSingleScalarResult();
 	}
 	
+	public function getProductsFoundPerDay($range_days=7)
+	{
+		$sql = "SELECT GROUP_CONCAT(found_day) AS found_day, GROUP_CONCAT(count) AS count
+				FROM (
+
+				SELECT DAY(p.date_added) AS found_day
+						,count(p.id) AS count
+				FROM productsearch.product p
+				WHERE p.date_added > CURDATE() - INTERVAL :range_days DAY
+				GROUP BY DAY(p.date_added) 
+
+				) d;
+		";
+		$conn = $this->getEntityManager()->getConnection();
+		$q = $conn->prepare($sql);
+		$q->bindValue('range_days', $range_days );
+		$q->execute();
+		return $q->fetchAll()[0];
+		
+	}
+	
 }

@@ -1,6 +1,8 @@
 {% extends "admin/index.html.twig" %}
 {% block datatable %}
-	<h2>Product Search Data Statistics</h2>
+	<h2>Product Search Data Statistics</h2>	
+	<h3>Products Found per Day</h3>
+	<canvas id="ProductsFoundChart" ></canvas>	
 	<div class="table-responsive">
 		<h3>Product</h3>
 		<table class="table" >
@@ -11,7 +13,7 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{ count.ProductsTotal }}</td>
+					<td>{{ data.ProductsTotal }}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -28,14 +30,49 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{ count.SourcesTotal }}</td>
-					<td>{{ count.SourcesVisitedTotal }}</td>
-					<td>{{ count.SourcesNotVisitedTotal }}</td>
-					<td>{{ count.SourcesNamedTotal }}</td>
-					<td>{{ count.SourcesUnnamedTotal }}</td>
+					<td>{{ data.SourcesTotal }}</td>
+					<td>{{ data.SourcesVisitedTotal }}</td>
+					<td>{{ data.SourcesNotVisitedTotal }}</td>
+					<td>{{ data.SourcesNamedTotal }}</td>
+					<td>{{ data.SourcesUnnamedTotal }}</td>
 				</tr>
 			</tbody>
 		</table>
-	</div>
-	
+		
+		
+	</div>	
+{% endblock %}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js" ></script>	
+<script>
+var ctx = $("#ProductsFoundChart").get(0).getContext('2d');
+var myChart = new Chart(ctx, {
+	type: 'line',
+	data: {
+		labels: [{{ data.ProductsFoundPerDay.found_day }}],
+		datasets: [{
+			label: '# of Products Found',
+			data: [{{ data.ProductsFoundPerDay.count }}],            
+			borderWidth: 1
+		}]
+	},
+	options: {
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero:true
+				}
+			}]
+		}
+	}
+});
+</script>
+{% endblock %}
+{% block head %}
+<style>
+canvas { 
+	height: 50% !important;
+	width: auto;
+}	
+</style>
 {% endblock %}
