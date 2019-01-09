@@ -73,7 +73,7 @@ class SourceRepository extends ServiceEntityRepository
 		// Get the oldest ones first		
 		return $this->createQueryBuilder('s')
 		->select()
-		->orderBy('s.date_last_updated', 'ASC')
+		->orderBy('s.date_last_updated, s.date_added', 'ASC')
 		->setMaxResults($limit) 
 		->getQuery()->getResult();
 	}
