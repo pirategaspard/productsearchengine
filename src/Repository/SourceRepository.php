@@ -127,5 +127,24 @@ class SourceRepository extends ServiceEntityRepository
 		$q->Where('s.date_last_updated IS NULL');
 		return $q->getQuery()->getSingleScalarResult();
 	}
+	
+	public function getSourcesVisitedPerDay($range_days=7)
+	{
+		$sql = "SELECT GROUP_CONCAT(visit_day) AS visit_day, GROUP_CONCAT(count) AS count
+				FROM (
+					SELECT DAY(s.date_last_updated) AS visit_day
+							,count(s.id) AS count
+					FROM productsearch.source s
+					WHERE s.date_last_updated > CURDATE() - INTERVAL :range_days DAY
+					GROUP BY DAY(s.date_last_updated) 
+				) d;
+		";
+		$conn = $this->getEntityManager()->getConnection();
+		$q = $conn->prepare($sql);
+		$q->bindValue('range_days', $range_days );
+		$q->execute();
+		return $q->fetchAll()[0];
+		
+	}
 
 }

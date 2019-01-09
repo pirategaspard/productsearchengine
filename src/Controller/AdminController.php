@@ -24,7 +24,8 @@ class AdminController extends AbstractController
 		$data['SourcesNamedTotal'] = $source_repo->getCountSourcesNamedTotal();
 		$data['SourcesUnnamedTotal'] = $source_repo->getCountSourcesUnnamedTotal();
 		$data['SourcesVisitedTotal'] = $source_repo->getCountSourcesVisitedTotal();
-		$data['SourcesNotVisitedTotal'] = $source_repo->getCountSourcesNotVisitedTotal();		
+		$data['SourcesNotVisitedTotal'] = $source_repo->getCountSourcesNotVisitedTotal();
+		$data['SourcesVisitedPerDay'] = $source_repo->getSourcesVisitedPerDay();
 		return $this->render('admin/admindata.html.twig',['data'=>$data]);
 	}
 	
