@@ -48,7 +48,7 @@ class SourceRepository extends ServiceEntityRepository
 		$q = $this->createQueryBuilder('s')
 		->select()
 		->Where('s.title IS NOT NULL')
-		->orderBy('s.date_last_updated', 'ASC')
+		->orderBy('s.date_last_updated, s.date_added', 'ASC')
 		->getQuery();
 		$p = new Paginator($q,$offset,$limit);
 		$p->getQuery()
@@ -80,7 +80,7 @@ class SourceRepository extends ServiceEntityRepository
 	
 	public function findNext($offset=0,$limit=20)
 	{		
-		$dql = "SELECT s FROM App\Entity\Source s ORDER BY s.date_last_updated ASC";
+		$dql = "SELECT s FROM App\Entity\Source s ORDER BY s.date_last_updated, s.date_added ASC";
 		$q = $this->getEntityManager()->createQuery($dql);
 		$p = new Paginator($q,$offset,$limit);
 		$p->getQuery()
