@@ -128,10 +128,11 @@ class ProductRepository extends ServiceEntityRepository
 		 * Create the domain ifo and put it in a temp table, then get the 
 		 * product count
 		 * */
+		 //,MID(url,1,LOCATE('com',url)+2) AS Domain
 		$sql = "CREATE TEMPORARY TABLE IF NOT EXISTS tmpDomains AS
 			(
 			SELECT id AS product_id
-					,MID(url,1,LOCATE('com',url)+2) AS Domain
+					,MID(url,LOCATE('//',url)+2,LOCATE('com',url)-LOCATE('//',url)+1) AS domain
 			FROM product
 			);
 			SELECT GROUP_CONCAT(QUOTE(domain)) AS domain, GROUP_CONCAT(count) AS count
