@@ -30,5 +30,9 @@ class AdminController extends AbstractController
 		return $this->render('admin/admindata.html.twig',['data'=>$data,'admin'=>$admin]);
 	}
 	
+	public function report_summary(){
+		
+	}
+	
 
 }

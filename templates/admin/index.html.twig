@@ -60,7 +60,7 @@
 					Scan Next Batch of Sources for Products
 					</a>
 				</li>
-				{% if(admin) %}
+				{% if((admin is defined) and (admin)) %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('Robots_ResetAll')}}">
 					<span data-feather="file-text"></span>
