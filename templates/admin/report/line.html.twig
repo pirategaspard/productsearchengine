@@ -1,0 +1,38 @@
+{% extends "admin/index.html.twig" %}
+{% block datatable %}
+	<h3>{{ data.chart.title }}</h3>
+	<canvas id="reportChart" ></canvas>				
+{% endblock %}
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js" ></script>	
+<script>
+var myChart = new Chart($("#reportChart").get(0).getContext('2d'), {
+	type: 'line',
+	data: {
+		labels: ['{{ data.chart.x_data }}'],
+		datasets: [{
+			label: '{{ data.chart.y_label }}',
+			data: [{{ data.chart.y_data }}],            
+			borderWidth: 1
+		}]
+	},
+	options: {
+		scales: {
+			yAxes: [{
+				ticks: {
+					beginAtZero:true
+				}
+			}]
+		}
+	}
+});
+</script>
+{% endblock %}
+{% block head %}
+<style>
+canvas { 
+	height: 100% !important;
+	width: 100% !important;
+}	
+</style>
+{% endblock %}

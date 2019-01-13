@@ -118,8 +118,38 @@ class ProductRepository extends ServiceEntityRepository
 		$q = $conn->prepare($sql);
 		$q->bindValue('range_days', $range_days );
 		$q->execute();
-		return $q->fetchAll()[0];
-		
+		return $q->fetchAll()[0];		
+	}
+	
+	public function getProductsFoundPerDomain()
+	{
+		/*
+		 * Because our schema isn't perfect we don't have domain info. 
+		 * Create the domain ifo and put it in a temp table, then get the 
+		 * product count
+		 * */
+		$sql = "CREATE TEMPORARY TABLE IF NOT EXISTS tmpDomains AS
+			(
+			SELECT id AS product_id
+					,MID(url,1,LOCATE('com',url)+2) AS Domain
+			FROM product
+			);
+			SELECT Domain AS domain
+					,count(*) AS count
+			FROM tmpDomains
+			GROUP BY Domain;
+		";
+		//$conn = $this->getEntityManager()->getConnection();
+		$pdo = $this->getEntityManager()->getConnection()->getWrappedConnection();
+		$q = $pdo->prepare($sql);
+		$q->execute();
+		$q->nextRowset();
+		//$pdo->query($sql);
+		//var_dump($q->nextRowset());
+		//var_dump($q->fetch());
+		//die;
+		return $q->fetch();		
+		//return $pdo->fetchAll();
 	}
 	
 }

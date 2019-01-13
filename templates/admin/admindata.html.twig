@@ -1,10 +1,6 @@
 {% extends "admin/index.html.twig" %}
 {% block datatable %}
-	<h2>Product Search Data Statistics</h2>	
-	<h3>Products Found per Day</h3>
-	<canvas id="ProductsFoundChart" ></canvas>
-	<h3>Sources Visited per Day</h3>
-	<canvas id="SourcesVisitedChart" ></canvas>
+	<h2>General Data Statistics</h2>	
 	<div class="table-responsive">
 		<h3>Product</h3>
 		<table class="table" >
@@ -43,59 +39,4 @@
 		
 		
 	</div>	
-{% endblock %}
-{% block script %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js" ></script>	
-<script>
-var ProductsFoundChart = $("#ProductsFoundChart").get(0).getContext('2d');
-var pChart = new Chart(ProductsFoundChart, {
-	type: 'line',
-	data: {
-		labels: [{{ data.ProductsFoundPerDay.found_day }}],
-		datasets: [{
-			label: '# of Products Found',
-			data: [{{ data.ProductsFoundPerDay.count }}],            
-			borderWidth: 1
-		}]
-	},
-	options: {
-		scales: {
-			yAxes: [{
-				ticks: {
-					beginAtZero:true
-				}
-			}]
-		}
-	}
-});
-var SourcesVisitedChart = $("#SourcesVisitedChart").get(0).getContext('2d');
-var sChart = new Chart(SourcesVisitedChart, {
-	type: 'line',
-	data: {
-		labels: [{{ data.SourcesVisitedPerDay.visit_day }}],
-		datasets: [{
-			label: '# of Sites Visited',
-			data: [{{ data.SourcesVisitedPerDay.count }}],            
-			borderWidth: 1
-		}]
-	},
-	options: {
-		scales: {
-			yAxes: [{
-				ticks: {
-					beginAtZero:true
-				}
-			}]
-		}
-	}
-});
-</script>
-{% endblock %}
-{% block head %}
-<style>
-canvas { 
-	height: 50% !important;
-	width: 50% !important;
-}	
-</style>
 {% endblock %}

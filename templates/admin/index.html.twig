@@ -14,6 +14,30 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
 				<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+				  <span>Reporting</span>
+				  <a class="d-flex align-items-center text-muted" href="{{ path('Sources')}}">
+					<span data-feather="plus-circle"></span>
+				  </a>
+				</h6>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('Admin_Products_Per_Domain')}}">
+					<span data-feather="file-text"></span>
+					Products per Domain
+					</a>
+				</li>				
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('Admin_Products_Per_Day')}}">
+					<span data-feather="file-text"></span>
+					Products Found per Day
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('Admin_Sources_Per_Day')}}">
+					<span data-feather="file-text"></span>
+					Sources Scanned per Day
+					</a>
+				</li>				
+				<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
 				  <span>Sources</span>
 				  <a class="d-flex align-items-center text-muted" href="{{ path('Sources')}}">
 					<span data-feather="plus-circle"></span>
