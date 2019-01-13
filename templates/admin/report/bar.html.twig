@@ -9,10 +9,10 @@
 var myChart = new Chart($("#reportChart").get(0).getContext('2d'), {
 	type: 'bar',
 	data: {
-		labels: ['{{ data.chart.x_data }}'],
+		labels: [{{ data.chart.x_data|raw }}],
 		datasets: [{
-			label: '{{ data.chart.y_label }}',
-			data: [{{ data.chart.y_data }}],            
+			label: '{{ data.chart.y_label|raw }}',
+			data: [{{ data.chart.y_data|raw }}],            
 			borderWidth: 1
 		}]
 	},

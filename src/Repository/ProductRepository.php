@@ -134,10 +134,14 @@ class ProductRepository extends ServiceEntityRepository
 					,MID(url,1,LOCATE('com',url)+2) AS Domain
 			FROM product
 			);
-			SELECT Domain AS domain
-					,count(*) AS count
-			FROM tmpDomains
-			GROUP BY Domain;
+			SELECT GROUP_CONCAT(QUOTE(domain)) AS domain, GROUP_CONCAT(count) AS count
+			FROM (
+				SELECT Domain AS domain
+						,count(*) AS count
+				FROM tmpDomains
+				GROUP BY Domain
+			) d;
+			DROP TEMPORARY TABLE tmpDomains;
 		";
 		//$conn = $this->getEntityManager()->getConnection();
 		$pdo = $this->getEntityManager()->getConnection()->getWrappedConnection();
@@ -146,9 +150,9 @@ class ProductRepository extends ServiceEntityRepository
 		$q->nextRowset();
 		//$pdo->query($sql);
 		//var_dump($q->nextRowset());
-		//var_dump($q->fetch());
+		//var_dump($q->fetchAll());
 		//die;
-		return $q->fetch();		
+		return $q->fetchAll()[0];		
 		//return $pdo->fetchAll();
 	}
 	
