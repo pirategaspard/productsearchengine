@@ -44,7 +44,7 @@ class AdminController extends AbstractController
 		$data['chart']['y_label'] = '# of Products Found';
 		$data['chart']['x_data'] = $ProductsFoundPerDay['domain'];
 		$data['chart']['y_data'] = $ProductsFoundPerDay['count'];
-		$data['chart']['colors'] = '["rgba(255, 99, 132, 0.2)","rgba(255, 159, 64, 0.2)","rgba(255, 205, 86, 0.2)","rgba(75, 192, 192, 0.2)","rgba(54, 162, 235, 0.2)","rgba(153, 102, 255, 0.2)","rgba(201, 203, 207, 0.2)"]';
+		$data['chart']['colors'] = '["rgba(255, 99, 132, 0.2)","rgba(255, 159, 64, 0.2)","rgba(255, 205, 86, 0.2)","rgba(75, 192, 192, 0.2)","rgba(54, 162, 235, 0.2)","rgba(153, 102, 255, 0.2)","rgba(201, 203, 207, 0.2)","rgba(90, 5, 207, 0.2)","rgba(201, 203, 50, 0.2)","rgba(20, 100, 20, 0.2)"]';
 		return $this->render('admin/report/chart.html.twig',['data'=>$data]);
 	}
 	
