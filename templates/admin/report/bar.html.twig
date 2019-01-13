@@ -13,7 +13,8 @@ var myChart = new Chart($("#reportChart").get(0).getContext('2d'), {
 		datasets: [{
 			label: '{{ data.chart.y_label|raw }}',
 			data: [{{ data.chart.y_data|raw }}],            
-			borderWidth: 1
+			borderWidth: 1,
+			backgroundColor: {{ data.chart.colors|raw }}
 		}]
 	},
 	options: {
