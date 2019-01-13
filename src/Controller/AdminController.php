@@ -63,7 +63,7 @@ class AdminController extends AbstractController
 		$data['chart']['y_label'] = '# of Products Found';
 		$data['chart']['x_data'] = $ProductsFoundPerDay['found_day'];
 		$data['chart']['y_data'] = $ProductsFoundPerDay['count'];
-		$data['chart']['colors'] = '["rgba(255, 99, 132, 0.2)","rgba(255, 159, 64, 0.2)","rgba(255, 205, 86, 0.2)","rgba(75, 192, 192, 0.2)","rgba(54, 162, 235, 0.2)","rgba(153, 102, 255, 0.2)","rgba(201, 203, 207, 0.2)"]';
+		$data['chart']['colors'] = '["rgba(10, 200, 64, 0.2)"]';
 		return $this->render('admin/report/chart.html.twig',['data'=>$data]);
 	}
 	
@@ -81,7 +81,7 @@ class AdminController extends AbstractController
 		$data['chart']['y_label'] = '# of Sources Found';
 		$data['chart']['x_data'] = $SourcesVisitedPerDay['visit_day'];
 		$data['chart']['y_data'] = $SourcesVisitedPerDay['count'];
-		$data['chart']['colors'] = '["rgba(255, 99, 132, 0.2)","rgba(255, 159, 64, 0.2)","rgba(255, 205, 86, 0.2)","rgba(75, 192, 192, 0.2)","rgba(54, 162, 235, 0.2)","rgba(153, 102, 255, 0.2)","rgba(201, 203, 207, 0.2)"]';
+		$data['chart']['colors'] = '["rgba(20, 50, 200, 0.2)"]';
 		return $this->render('admin/report/chart.html.twig',['data'=>$data]);
 	}
 	
