@@ -14,7 +14,8 @@ class AdminController extends AbstractController
 	/**
 	 * @Route("/admin", name="Admin")
 	 */
-    public function index() {
+    public function index(Request $request) {
+		$admin = $request->get('admin',false);
 		$source_repo = $this->getDoctrine()->getRepository(Source::class);
 		$product_repo = $this->getDoctrine()->getRepository(Product::class);
 		$data = array();
@@ -26,7 +27,7 @@ class AdminController extends AbstractController
 		$data['SourcesVisitedTotal'] = $source_repo->getCountSourcesVisitedTotal();
 		$data['SourcesNotVisitedTotal'] = $source_repo->getCountSourcesNotVisitedTotal();
 		$data['SourcesVisitedPerDay'] = $source_repo->getSourcesVisitedPerDay();
-		return $this->render('admin/admindata.html.twig',['data'=>$data]);
+		return $this->render('admin/admindata.html.twig',['data'=>$data,'admin'=>$admin]);
 	}
 	
 

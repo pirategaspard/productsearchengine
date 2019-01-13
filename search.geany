@@ -28,14 +28,10 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=5
-FILE_NAME_0=2924;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FRobotService.php;0;4
-FILE_NAME_1=2235;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FRepository%2FSourceRepository.php;0;4
-FILE_NAME_2=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FEntity%2FProduct.php;0;4
-FILE_NAME_3=448;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fadmin%2Fsource%2Findex.html.twig;0;4
-FILE_NAME_4=645;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fadmin%2Fproduct%2Findex.html.twig;0;4
-FILE_NAME_5=1454;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FScraper%2FAbstractScraper.php;0;4
-FILE_NAME_6=0;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FService%2FScraper%2FScraperBasic.php;0;4
+current_page=0
+FILE_NAME_0=2556;HTML;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Ftemplates%2Fadmin%2Findex.html.twig;0;4
+FILE_NAME_1=1278;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FController%2FAdminController.php;0;4
+FILE_NAME_2=378;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fpirategaspard%2Fwww%2Fsearch%2Fsrc%2FController%2FSearchController.php;0;4
 
 [VTE]
 last_dir=/home/pirategaspard

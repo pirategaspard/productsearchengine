@@ -60,12 +60,14 @@
 					Scan Next Batch of Sources for Products
 					</a>
 				</li>
+				{% if(admin) %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('Robots_ResetAll')}}">
 					<span data-feather="file-text"></span>
 					Clear database
 					</a>
-				</li>				
+				</li>
+				{% endif %}		
 			</ul>
 		</div>
 	</nav>        
