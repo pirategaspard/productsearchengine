@@ -76,9 +76,9 @@ class AdminController extends AbstractController
 		$data = array();
 		$data['chart'] = array();
 		$data['chart']['type'] = 'line';
-		$data['chart']['title'] = 'Sources Found Per Day';
+		$data['chart']['title'] = 'Sources visited Per Day';
 		//$data['chart']['x_label'] = 'X Axis';
-		$data['chart']['y_label'] = '# of Sources Found';
+		$data['chart']['y_label'] = '# Visited';
 		$data['chart']['x_data'] = $SourcesVisitedPerDay['visit_day'];
 		$data['chart']['y_data'] = $SourcesVisitedPerDay['count'];
 		$data['chart']['colors'] = '["rgba(20, 50, 200, 0.2)"]';
