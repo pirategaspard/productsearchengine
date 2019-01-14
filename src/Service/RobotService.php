@@ -26,7 +26,7 @@ class RobotService
 		// Step 1) get list of urls from existing sources				
 		$source_repository = $this->ManagerRegistry->getRepository(Source::class);
 		//$sources = $source_repository->findAll();
-		$sources = $source_repository->getNextOldest(10); // get the sources that haven't been looked at for a while
+		$sources = $source_repository->getNextOldest(5); // get the sources that haven't been looked at for a while
 		return $this->fetchAllSourcesData($sources);				
 	}
 	
